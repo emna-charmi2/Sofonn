@@ -1,26 +1,273 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-arimo:            var(--font-arimo-next), sans-serif;
+  --font-inter:            var(--font-inter-next), sans-serif;
+  --font-mulish:           var(--font-mulish-next), sans-serif;
+  --font-figtree:          var(--font-figtree-next), sans-serif;
+  --font-poppins-semibold: var(--font-poppins-semibold-next), sans-serif;
+  --font-lato-regular:     var(--font-lato-next), sans-serif;
+  --font-noto-sans:        var(--font-noto-sans-next), sans-serif;
+  --font-nunito-sans:      var(--font-nunito-sans-next), sans-serif;
+  --font-public-sans:      var(--font-public-sans-next), sans-serif;
+}
+/* Opti
+/* ============================================================
+   1. CSS VARIABLES — DARK MODE (default)
+   ============================================================ */
+:root,
+[data-theme="dark"] {
+
+  /* Background layers — each section uses a different level */
+  --bg-base:        #080b18;   /* deepest base */
+  --bg-level-1:     #0a0d1f;   /* section A */
+  --bg-level-2:     #0d1028;   /* section B */
+  --bg-level-3:     #0f1330;   /* section C — slightly lighter navy */
+  --bg-level-4:     #0c0f22;   /* section D */
+  --bg-level-5:     #111526;   /* section E — gray-navy */
+  --bg-card:        rgba(255, 255, 255, 0.03);
+  --bg-card-hover:  rgba(255, 255, 255, 0.055);
+
+  /* Section gradients — subtle diagonal shifts */
+  --gradient-s1: linear-gradient(150deg, #080b18 0%, #0a0d2e 100%);
+  --gradient-s2: linear-gradient(135deg, #06081a 0%, #0c1130 60%, #080c22 100%);
+  --gradient-s3: linear-gradient(160deg, #0d1020 0%, #111830 50%, #0a0e20 100%);
+  --gradient-s4: linear-gradient(145deg, #0f1225 0%, #0a0d1e 100%);
+  --gradient-s5: linear-gradient(155deg, #0b0f20 0%, #131728 60%, #0d1122 100%);
+  --gradient-s6: linear-gradient(140deg, #080b18 0%, #0e1228 100%);
+
+  /* Accent */
+  --accent:         #3b82f6;
+  --accent-light:   #60a5fa;
+  --accent-dim:     rgba(59, 130, 246, 0.15);
+  --accent-border:  rgba(59, 130, 246, 0.2);
+  --accent-glow:    rgba(59, 130, 246, 0.08);
+
+  /* Text */
+  --text-primary:   #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted:     #475569;
+  --text-accent:    #60a5fa;
+
+  /* Borders */
+  --border-subtle:  rgba(255, 255, 255, 0.06);
+  --border-card:    rgba(255, 255, 255, 0.08);
+  --border-accent:  rgba(59, 130, 246, 0.25);
+
+  /* Divider between sections */
+  --divider: linear-gradient(90deg, transparent, rgba(59,130,246,0.25), transparent);
+
+  /* Shadows */
+  --shadow-card:    0 4px 32px rgba(0, 0, 0, 0.45);
+  --shadow-glow:    0 0 40px rgba(59, 130, 246, 0.12);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* ============================================================
+   2. CSS VARIABLES — LIGHT MODE
+   ============================================================ */
+[data-theme="light"] {
+
+  --bg-base:        #f8fafc;
+  --bg-level-1:     #ffffff;
+  --bg-level-2:     #f1f5f9;
+  --bg-level-3:     #e8f0fe;
+  --bg-level-4:     #f8fafc;
+  --bg-level-5:     #eef2ff;
+  --bg-card:        rgba(0, 0, 0, 0.025);
+  --bg-card-hover:  rgba(0, 0, 0, 0.045);
+
+  --gradient-s1: linear-gradient(150deg, #ffffff 0%, #f0f4ff 100%);
+  --gradient-s2: linear-gradient(135deg, #f8fafc 0%, #e8f0fe 60%, #f1f5ff 100%);
+  --gradient-s3: linear-gradient(160deg, #f1f5f9 0%, #e0e9ff 50%, #f8fafc 100%);
+  --gradient-s4: linear-gradient(145deg, #eef2ff 0%, #f8fafc 100%);
+  --gradient-s5: linear-gradient(155deg, #f0f4ff 0%, #e8f0fe 60%, #f5f8ff 100%);
+  --gradient-s6: linear-gradient(140deg, #ffffff 0%, #eef2ff 100%);
+
+  --accent:         #2563eb;
+  --accent-light:   #3b82f6;
+  --accent-dim:     rgba(37, 99, 235, 0.08);
+  --accent-border:  rgba(37, 99, 235, 0.2);
+  --accent-glow:    rgba(37, 99, 235, 0.06);
+
+  --text-primary:   #0f172a;
+  --text-secondary: #475569;
+  --text-muted:     #94a3b8;
+  --text-accent:    #2563eb;
+
+  --border-subtle:  rgba(0, 0, 0, 0.06);
+  --border-card:    rgba(0, 0, 0, 0.08);
+  --border-accent:  rgba(37, 99, 235, 0.2);
+
+  --divider: linear-gradient(90deg, transparent, rgba(37,99,235,0.2), transparent);
+
+  --shadow-card:    0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-glow:    0 0 40px rgba(37, 99, 235, 0.08);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ============================================================
+   3. TYPOGRAPHY SYSTEM
+   ============================================================ */
+
+
+h1, h2, h3, h4, h5, h6,
+.font-display {
+  letter-spacing: -0.02em;
+}
+
+.eyebrow {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-accent);
+}
+
+/* ============================================================
+   4. REUSABLE SECTION STYLES
+   ============================================================ */
+
+/* Each section gets a distinct gradient level */
+.section-s1 { background: var(--gradient-s1); }
+.section-s2 { background: var(--gradient-s2); }
+.section-s3 { background: var(--gradient-s3); }
+.section-s4 { background: var(--gradient-s4); }
+.section-s5 { background: var(--gradient-s5); }
+.section-s6 { background: var(--gradient-s6); }
+
+/* Divider line between sections */
+.section-divider {
+  height: 1px;
+  background: var(--divider);
+}
+
+/* ── Cards ── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  border-radius: 1rem;
+  box-shadow: var(--shadow-card);
+  transition: transform 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+.card:hover {
+  background: var(--bg-card-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-card), var(--shadow-glow);
+}
+
+/* ── Icon box ── */
+.icon-box {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  transition: transform 0.25s ease;
+}
+.card:hover .icon-box {
+  transform: scale(1.1);
+}
+
+/* ── Buttons ── */
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  padding: 0.75rem 2rem;
+  border-radius: 0.625rem;
+  font-weight: 700;
+  font-family: 'Syne', sans-serif;
+  transition: background 0.2s, transform 0.2s;
+}
+.btn-primary:hover {
+  background: var(--accent-light);
+  transform: translateY(-1px);
+}
+.btn-ghost {
+  background: var(--bg-card);
+  border: 1px solid var(--border-card);
+  color: var(--text-primary);
+  padding: 0.75rem 2rem;
+  border-radius: 0.625rem;
+  font-weight: 700;
+  font-family: 'Syne', sans-serif;
+  transition: background 0.2s;
+}
+.btn-ghost:hover {
+  background: var(--bg-card-hover);
+}
+
+/* ── Radial glows (decorative) ── */
+.glow-tl {
+  position: absolute;
+  top: -8rem; left: -8rem;
+  width: 28rem; height: 28rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  opacity: 0.12;
+  pointer-events: none;
+}
+.glow-br {
+  position: absolute;
+  bottom: -10rem; right: -10rem;
+  width: 36rem; height: 36rem;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent) 0%, transparent 70%);
+  opacity: 0.08;
+  pointer-events: none;
+}
+
+
+/* ── Quote card ── */
+.quote-card {
+  position: relative;
+  padding: 2rem 2.25rem;
+  border-radius: 1rem;
+  background: var(--accent-glow);
+  border: 1px solid var(--accent-border);
+}
+.quote-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 3px; height: 100%;
+  background: var(--accent);
+  border-radius: 1rem 0 0 1rem;
+}
+
+
+
+/* ── Blog card image zoom ── */
+.blog-img-wrap {
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+.blog-img-wrap img {
+  transition: transform 0.5s ease;
+}
+.blog-card:hover .blog-img-wrap img {
+  transform: scale(1.08);
+}
+
+/* ── CTA section ── */
+.cta-blob {
+  background: linear-gradient(135deg, rgba(59,130,246,0.18) 0%, transparent 60%);
+  border-radius: 2.5rem;
+  border: 1px solid var(--border-card);
+}
+
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.cursor {
+  animation: blink 1.2s infinite;
 }
