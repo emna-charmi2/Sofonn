@@ -1,9 +1,41 @@
 export default function WhyIQ() {
+    const features = [
+    {
+      icon: "settings_suggest",
+      title: "Tailored to Your Needs",
+      desc: "Customizable dashboards and reporting modules to fit your specific fleet size and vessel types.",
+    },
+    {
+      icon: "gavel",
+      title: "Streamlined Compliance",
+      desc: "Stay ahead of evolving environmental and safety regulations with automated documentation.",
+    },
+    {
+      icon: "hub",
+      title: "Real-time Collaboration",
+      desc: "Bridge the gap between ship and shore with instant data synchronization and secure messaging.",
+    },
+    {
+      icon: "report_problem",
+      title: "Proactive Deficiency Management",
+      desc: "Identify and resolve potential risks before they lead to costly detentions or accidents.",
+    },
+    {
+      icon: "trending_up",
+      title: "Scalable for Growth",
+      desc: "Whether managing 5 or 500 vessels, our infrastructure scales with your business expansion.",
+    },
+    {
+      icon: "eco",
+      title: "Optimize Fuel & Emissions",
+      desc: "Powerful analytics to reduce fuel consumption and meet decarbonization targets (CII/EEXI).",
+    },
+  ];
   return (
 
-
+<>
 <section className="py-12 px-4 bg-[#050c1a] relative overflow-hidden">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#007bff]/[0.04] blur-[80px] rounded-full pointer-events-none" />
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-175 h-100 bg-[#007bff]/4 blur-[80px] rounded-full pointer-events-none" />
         <div className="max-w-6xl mx-auto relative">
           <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center mb-2">Why Choose Marine IQ?</h2>
           <p className="text-slate-500 text-center max-w-lg mx-auto">Marine IQ is more than just a software solution. It's a strategic partner dedicated to your maritime success. Here's why leading ship owners, shipping companies, and charterers choose Marine IQ.</p>
@@ -18,7 +50,7 @@ export default function WhyIQ() {
               {icon:'eco',title:'Optimize Fuel & Emissions',desc:'Powerful analytics to reduce fuel consumption and meet decarbonization targets (CII/EEXI).'},
             ].map(({icon,title,desc}) => (
               <div key={title} className="card p-6">
-                <span className="material-symbols-outlined text-[#007bff] mb-3 block" style={{fontSize:'1.6rem'}}>{icon}</span>
+                <span className="material-symbols-outlined text-[#0040C1] mb-3 block" style={{fontSize:'1.6rem'}}>{icon}</span>
                 <h4 className="text-sm font-bold text-white mb-1.5">{title}</h4>
                 <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
               </div>
@@ -27,4 +59,40 @@ export default function WhyIQ() {
         </div>
       </section>
 
+    <section className="py-24 px-4 bg-[#050c1a] relative overflow-hidden">
+      {/* Dégradé d'arrière-plan subtil */}
+
+      <div className="max-w-6xl mx-auto relative z-10">
+        {/* En-tête */}
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+            Why Choose Marine IQ?
+          </h2>
+          <p className="text-slate-500 max-w-2xl mx-auto text-base leading-relaxed">
+            Marine IQ is more than just a software solution. It’s a strategic partner dedicated to your maritime success.
+            Here’s why leading ship owners, shipping companies, and charterers choose Marine IQ.
+          </p>
+          <div className="w-12 h-0.5 bg-blue-600 mx-auto mt-8 rounded-full" />
+        </div>
+
+        {/* Grille de cartes */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {features.map(({ icon, title, desc }) => (
+            <div
+              key={title}
+              className="group text-center p-6 rounded-2xl transition-all duration-200 hover:shadow-lg hover:bg-blue-50/30"
+            >
+              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-blue-50 text-blue-600 mb-4 group-hover:bg-blue-100 transition-colors">
+                <span className="material-symbols-outlined text-3xl">
+                  {icon}
+                </span>
+              </div>
+              <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
+              <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+</>
         )}

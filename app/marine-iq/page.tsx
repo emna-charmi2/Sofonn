@@ -3,9 +3,10 @@ import VideoHome from '../components/ui/video-home';
 import Operations from '../features/marine-iq/Operations';
 import WhyIQ from '../features/marine-iq/Why';
 import Modules from '../features/marine-iq/modules';
+import CompetitiveEdge from '../features/marine-iq/competitive';
 import CallToAction from '../features/marine-iq/CTA';
 import type { Metadata } from 'next';
-
+import newEdgeA from '../features/marine-iq/new';
 export const metadata: Metadata = {
   title: 'Sofonn',
   description: 'Maritime Intelligence Platform',
@@ -127,21 +128,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </button>
       </div>
 
-      {/* Video container */}
-      <div style={{
-        position: 'relative',
-        width: '100%',
-        maxWidth: 860,
-        borderRadius: '1rem',
-        overflow: 'hidden',
-        border: '1px solid rgba(255,255,255,0.1)',
-        boxShadow: '0 32px 80px rgba(0,0,0,0.6)',
-        aspectRatio: '16/9',
-        background: '#050c1a',
-        cursor: 'pointer',
-      }}>
-        <VideoHome/>
-      </div>
     </section>
    
 
@@ -166,6 +152,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </div>
       </section>
+
+        <CompetitiveEdge/>
+
 
       {/* ── HOW IT TRANSFORMS ── */}
             <Operations/>

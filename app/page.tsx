@@ -13,6 +13,9 @@ import { SOLUTION } from './constants/Solutions';
 import TypingText from './components/TypingText';
 import VideoHome from './components/ui/video-home';
 import Services from '@/app/features/home/Services';
+import Teste from './features/home/teste';
+import Services2 from './features/home/A2';
+import FinancialFreedomHero from './components/finfree';
 import VideoHomeLight  from './components/ui/video-home-light';
 
 
@@ -113,45 +116,35 @@ export default function Home() {
           }}
         />
       </section>
- 
+
       <div className="section-divider" />
  <div data-aos="fade-up" data-aos-duration="1000">
         <AboutUs />
       </div>
 
-      <div className="section-divider" />
 
     {/* Core Modules */}
     <div data-aos="fade-up" data-aos-duration="1000">
       <Services />
     </div>
+<Services2/>
+
+ <Teste/>
+
     
     <div className="section-divider" />
  <div data-aos="fade-up" data-aos-duration="1000">
       <Offers />
     </div>
-    
    
-        {/* S4 — Build CTA Banner */}
-      <section className="section-s4 relative py-20 overflow-hidden">
-        <div className="glow-br" />
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="cta-blob p-8 lg:p-12 flex flex-col md:flex-row items-center justify-between gap-8">
-            <div className="max-w-xl">
-              <h2 className="text-2xl sm:text-3xl font-bold mb-4" style={{ color: 'var(--text-primary)' }}>What you can build with Sofonn Solutions</h2>
-              <p className="text-sm leading-relaxed" style={{ color: 'var(--text-secondary)' }}>Unlock Your Potential, Build Your Success. From streamlined logistics to efficient operations, we have everything you need to elevate your business on the high seas.</p>
-            </div>
-            <button className="btn-primary shrink-0">Start Building</button>
-          </div>
-        </div>
-      </section>
+          
 
       <div className="section-divider" />
        {/* Why Choose us */}
      <div data-aos="fade-up" data-aos-duration="1000">
       <Why />
     </div>
-
+          
     {/* Offers */}
     <div className="section-divider" />
 
@@ -197,7 +190,8 @@ export default function Home() {
 
       {/* S7 — Final CTA */}
       <div className="section-divider" />
-    
+    <FinancialFreedomHero/>
+      <div className="section-divider" />
       <div data-aos="fade-up" data-aos-duration="1000">
         <CallToAction />
       </div>
