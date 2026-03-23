@@ -1,5 +1,7 @@
+"use client";
+
 export default function WhyIQ() {
-    const features = [
+  const features = [
     {
       icon: "settings_suggest",
       title: "Tailored to Your Needs",
@@ -31,44 +33,64 @@ export default function WhyIQ() {
       desc: "Powerful analytics to reduce fuel consumption and meet decarbonization targets (CII/EEXI).",
     },
   ];
+
+  const rows = [
+    features.slice(0, 3),
+    features.slice(3, 6),
+  ];
+
   return (
+    <section className="py-28 px-4 sm:px-8 bg-[#050c1a] relative overflow-hidden">
+      {/* Background glows */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-125 h-125 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
 
-<>
+      <div className="w-[80%] max-w-480 mx-auto relative z-10">
 
-    <section className="py-24 px-4 bg-[#050c1a] relative overflow-hidden">
-      {/* Dégradé d'arrière-plan subtil */}
-
-      <div className="max-w-6xl mx-auto relative z-10">
-        {/* En-tête */}
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-white mb-4">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-[clamp(2.4rem,5vw,3.8rem)] font-extrabold text-white mb-5 leading-tight tracking-tight">
             Why Choose Marine IQ?
           </h2>
-          <p className="text-slate-500 max-w-2xl mx-auto text-base leading-relaxed">
-            Marine IQ is more than just a software solution. It’s a strategic partner dedicated to your maritime success.
-            Here’s why leading ship owners, shipping companies, and charterers choose Marine IQ.
+          <p className="text-slate-400 max-w-2xl mx-auto text-[clamp(1rem,1.5vw,1.2rem)] leading-relaxed">
+            Marine IQ is more than just a software solution. It's a strategic partner dedicated to your maritime success.
+            Here's why leading ship owners, shipping companies, and charterers choose Marine IQ.
           </p>
-          <div className="w-12 h-0.5 bg-blue-600 mx-auto mt-8 rounded-full" />
+          <div className="w-16 h-0.75 bg-linear-to-r from-blue-400 via-blue-500 to-blue-600 rounded-full mx-auto mt-6" />
         </div>
 
-        {/* Grille de cartes */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {features.map(({ icon, title, desc }) => (
+        {/* Cards */}
+        <div className="flex flex-col gap-5">
+          {rows.map((row, idx) => (
             <div
-              key={title}
-              className="group text-center p-6 rounded-2xl transition-all duration-200 hover:shadow-lg hover:bg-blue-50/30"
+              key={idx}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
             >
-              <div className="inline-flex items-center justify-center w-14 h-14 rounded-xl bg-blue-50 text-blue-600 mb-4 group-hover:bg-blue-100 transition-colors">
-                <span className="material-symbols-outlined text-3xl">
-                  {icon}
-                </span>
-              </div>
-              <h3 className="text-lg font-bold text-white mb-2">{title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{desc}</p>
+              {row.map(({ icon, title, desc }) => (
+                <div
+                  key={title}
+                  className="flex gap-5 items-start p-7 rounded-2xl bg-white/3 border border-white/[0.07] transition-all duration-200 hover:border-blue-500/40 hover:bg-blue-500/10 hover:shadow-xl hover:shadow-blue-500/10"
+                >
+                  {/* Icon */}
+                  <div className="shrink-0 w-14 h-14 rounded-xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-blue-400 text-[2rem] leading-none">
+                      {icon}
+                    </span>
+                  </div>
+
+                  {/* Text */}
+                  <div>
+                    <h4 className="text-[1.4rem] font-bold text-white mb-2 leading-snug">{title}</h4>
+                    <p className="text-[1.1rem] text-slate-400 leading-relaxed">{desc}</p>
+                  </div>
+                </div>
+              ))}
             </div>
           ))}
         </div>
+
       </div>
     </section>
-</>
-        )}
+  );
+}

@@ -1,5 +1,4 @@
 "use client";
-import { useState } from "react";
 
 export default function Modules() {
   const modules = [
@@ -13,51 +12,59 @@ export default function Modules() {
     { icon: 'settings', title: 'Settings', desc: 'Granular control over notifications, permissions, data retention, and system preferences.' },
   ];
 
-  // Regrouper les modules dans les lignes souhaitées
   const rows = [
-    modules.slice(0, 3), // 3 premiers
-    modules.slice(3, 5), // 2 suivants
-    modules.slice(5, 8), // 3 derniers
+    modules.slice(0, 3),
+    modules.slice(3, 5),
+    modules.slice(5, 8),
   ];
 
   return (
-    <section className="py-24 px-4 bg-[#050c1a] relative overflow-hidden">
-      {/* Dégradés de fond */}
-      <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[700px] h-[400px] bg-[#007bff]/[0.04] blur-[80px] rounded-full pointer-events-none" />
-      <div className="max-w-5xl mx-auto relative">
-        <h2 className="text-3xl md:text-4xl font-extrabold text-white text-center mb-2">
-          Marine IQ Modules
-        </h2>
-        <p className="text-slate-500 text-center max-w-lg mx-auto">
-          The complete ecosystem for maritime excellence.
-        </p>
-        <div className="w-12 h-0.5 bg-blue-500 mx-auto mt-3 mb-12 rounded-full" />
+    <section className="py-28 px-4 sm:px-8 bg-[#050c1a] relative overflow-hidden">
+      {/* Background glows */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-125 h-125 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
 
-        <div className="flex flex-col gap-12">
+      <div className="w-[80%] max-w-480 mx-auto relative z-10">
+
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-[clamp(2.4rem,5vw,3.8rem)] font-extrabold text-white mb-5 leading-tight tracking-tight">
+            Marine IQ Modules
+          </h2>
+          <p className="text-slate-400 max-w-2xl mx-auto text-[clamp(1rem,1.5vw,1.2rem)] leading-relaxed">
+            The complete ecosystem for maritime excellence — every tool your fleet needs, in one unified platform.
+          </p>
+          <div className="w-16 h-0.75 bg-linear-to-r from-blue-400 via-blue-500 to-blue-600 rounded-full mx-auto mt-6" />
+        </div>
+
+        {/* Cards */}
+        <div className="flex flex-col gap-5">
           {rows.map((row, idx) => (
             <div
               key={idx}
-              className={`grid grid-cols-1 sm:grid-cols-2 gap-6 ${
-                row.length === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'
-              } ${row.length === 2 ? 'md:justify-center md:mx-auto md:w-2/3' : ''}`}
+              className={`grid grid-cols-1 sm:grid-cols-2 gap-5 ${
+                row.length === 2
+                  ? 'lg:grid-cols-2 lg:w-2/3 lg:mx-auto'
+                  : 'lg:grid-cols-3'
+              }`}
             >
               {row.map(({ icon, title, desc }) => (
                 <div
                   key={title}
-                  className="flex gap-4 items-start p-4 rounded-xl transition-colors hover:bg-white/[0.02]"
+                  className="flex gap-5 items-start p-7 rounded-2xl bg-white/3 border border-white/[0.07] transition-all duration-200 hover:border-blue-500/40 hover:bg-blue-500/10 hover:shadow-xl hover:shadow-blue-500/10"
                 >
-                  <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-blue-500/10 flex items-center justify-center">
-                    <span className="material-symbols-outlined text-blue-400 text-xl">
+                  {/* Icon */}
+                  <div className="shrink-0 w-14 h-14 rounded-xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-blue-400 text-[2rem] leading-none">
                       {icon}
                     </span>
                   </div>
+
+                  {/* Text */}
                   <div>
-                    <h4 className="text-sm font-semibold text-white mb-1">
-                      {title}
-                    </h4>
-                    <p className="text-xs text-slate-400 leading-relaxed">
-                      {desc}
-                    </p>
+                    <h4 className="text-[1.4rem] font-bold text-white mb-2 leading-snug">{title}</h4>
+                    <p className="text-[1.1rem] text-slate-400 leading-relaxed">{desc}</p>
                   </div>
                 </div>
               ))}

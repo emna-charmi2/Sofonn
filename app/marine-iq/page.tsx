@@ -6,7 +6,6 @@ import Modules from '../features/marine-iq/modules';
 import CompetitiveEdge from '../features/marine-iq/competitive';
 import CallToAction from '../features/marine-iq/CTA';
 import type { Metadata } from 'next';
-import newEdgeA from '../features/marine-iq/new';
 export const metadata: Metadata = {
   title: 'Sofonn',
   description: 'Maritime Intelligence Platform',
@@ -132,26 +131,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
    
 
       {/* ── YOUR COMPETITIVE EDGE ── */}
-      <section className="py-24 px-4">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-black text-center mb-2">Your Competitive Edge</h2>
-          <p className="text-slate-500 text-center">Tools that move the needle for modern maritime operators.</p>
-          <div className="section-divider" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {[
-              {icon:'trending_up', title:'Improve Efficiency', desc:'Streamline workflows with automated intelligence, reducing manual data entry and operational lag.'},
-              {icon:'payments', title:'Boost Profitability', desc:'Reduce overhead and optimize resource allocation through data-driven financial insights.'},
-              {icon:'verified_user', title:'Enhance Standards', desc:'Maintain peak compliance and safety protocols with automated tracking and real-time audits.'},
-            ].map(({icon,title,desc}) => (
-              <div key={title} className="card p-6">
-                <span className="material-symbols-outlined text-[#007bff] mb-3 block" style={{fontSize:'1.6rem'}}>{icon}</span>
-                <h3 className="text-sm font-bold text-[#007bff] mb-1.5">{title}</h3>
-                <p className="text-xs text-slate-500 leading-relaxed">{desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
         <CompetitiveEdge/>
 
@@ -161,7 +141,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
       {/* ── WHY CHOOSE ── */}
             <WhyIQ/>
-
       {/* ── MODULES ── */}
      <Modules/>
       {/* ── CTA ── */}

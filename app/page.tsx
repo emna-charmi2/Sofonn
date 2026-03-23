@@ -13,8 +13,6 @@ import { SOLUTION } from './constants/Solutions';
 import TypingText from './components/TypingText';
 import VideoHome from './components/ui/video-home';
 import Services from '@/app/features/home/Services';
-import Teste from './features/home/teste';
-import Services2 from './features/home/A2';
 import FinancialFreedomHero from './components/finfree';
 import VideoHomeLight  from './components/ui/video-home-light';
 
@@ -126,9 +124,7 @@ export default function Home() {
     <div data-aos="fade-up" data-aos-duration="1000">
       <Services />
     </div>
-<Services2/>
-
- <Teste/>
+*
 
     
     <div className="section-divider" />
@@ -211,93 +207,7 @@ export default function Home() {
       <div className="section-divider" />
       <div className="section-divider" />
 
-  <div className="relative min-h-screen w-full overflow-hidden">
-      {/* 1. Image de fond (tu peux la changer) */}
-      <div
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?q=80&w=1974&auto=format&fit=crop')`,
-        }}
-      >
-        <div className="absolute inset-0 bg-black/40" /> {/* un peu plus sombre pour que les rayures ressortent */}
-      </div>
 
-      {/* 2. Contenu principal + glass avec rayures verticales */}
-      <div className="relative z-10 flex min-h-screen items-center justify-center px-6">
-        <div
-          className={`
-            relative
-            backdrop-blur-2xl bg-white/5
-            border border-white/15
-            rounded-2xl md:rounded-3xl
-            shadow-2xl shadow-black/40
-            p-8 md:p-12 lg:p-16
-            max-w-lg w-full
-            text-center
-            overflow-hidden
-            transition-all duration-700
-            hover:scale-[1.02] hover:shadow-purple-600/30
-          `}
-        >
-          {/* Effet rayures verticales colorées (chromatic aberration stylisé) */}
-          <div
-            className="absolute inset-0 pointer-events-none opacity-60 mix-blend-screen"
-            style={{
-              background: `
-                repeating-linear-gradient(
-                  90deg,
-                  transparent 0%,
-                  rgba(255, 0, 100, 0.12) 8%,
-                  transparent 16%,
-                  rgba(0, 255, 200, 0.10) 24%,
-                  transparent 32%,
-                  rgba(180, 0, 255, 0.11) 40%,
-                  transparent 48%
-                ),
-                repeating-linear-gradient(
-                  90deg,
-                  transparent 4%,
-                  rgba(255, 180, 0, 0.09) 12%,
-                  transparent 20%,
-                  rgba(0, 200, 255, 0.08) 28%,
-                  transparent 36%
-                )
-              `,
-              backgroundSize: '180px 100%, 140px 100%',
-              animation: 'stripesMove 18s linear infinite',
-            }}
-          />
-
-          {/* Optionnel : léger glow violet/rose sur les bords */}
-          <div className="absolute inset-0 pointer-events-none border-2 border-transparent bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-purple-500/10 opacity-0 hover:opacity-100 transition-opacity duration-700" />
-
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6 relative z-10">
-            Votre Titre Ici
-          </h1>
-
-          <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed relative z-10">
-            Un beau texte descriptif avec un effet glass + rayures verticales
-            colorées style réfraction / chromatic aberration.
-          </p>
-
-          <button
-            className="
-              relative z-10
-              px-8 py-4 bg-white/15 backdrop-blur-md
-              border border-white/25 rounded-xl
-              text-white font-medium text-lg
-              hover:bg-white/25 hover:border-white/40
-              transition-all duration-400
-              active:scale-95
-            "
-          >
-            Découvrir →
-          </button>
-        </div>
-      </div>
-
-
-    </div>
       <div className="section-divider" />
 
       {/* S6 — Blog */}
