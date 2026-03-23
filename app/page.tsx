@@ -22,7 +22,6 @@ import VideoHomeLight  from './components/ui/video-home-light';
 
 
 
-
 const BLOG_POSTS = [
   { src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA_aySjtrJebUzzQmlUO2cR03f97E9kz5E1jGSc_yg4orRg9nDOs8-KIltEoGCSkdAKib1j_OmLPMzeaIzJc0FV_1tnoBXph22ZuScHMXzt9C-bOOlW8ydrTupsCuRui_C59NjWtJd6pfgWO321yJivwQ3V0BGPIq7y7xymgxpkmme1wNtXgEgjsj8XujGyIF_64pZRKGGsY-Dzc2YdzCyTGUfegqGgMeUTRbsAbLlEzHlDDbNJywCkUnFBloYLYOMxFfL-KEq6Mc8', tag: 'Sustainability', title: 'How Maritime AI reduces Carbon Emissions', excerpt: 'Exploring the direct impact of intelligent routing on global shipping carbon footprints.' },
   { src: 'https://lh3.googleusercontent.com/aida-public/AB6AXuCl8xXVaUjSEysQDc4j2agu-HH2FJJo_pVTvLnlDgnbBgncKXTxAcMWzggxyaancF-n5FOrv4POkkCHWo1mLbGRsN4L7EQhr3BXDWaavdrsqGOmaL_zQu8lGcDkPn61ySVFY6WQRiW7I7Sx1XFTBsi8wMB-DERs0NFa1YBZToMejEUycLjetcMohfALh18NcZAhpc--n84rAOzJs1lurQT2ZHuPBmHVV9nFajESt4mKMww9GJWmG6GRgJbbhp3uDjyi8CNcjxE2pyI', tag: 'Technology',    title: 'The Future of Autonomous Navigation',    excerpt: 'A deep dive into the sensors and AI models powering the next generation of cargo vessels.' },
@@ -156,6 +155,150 @@ export default function Home() {
       <div className="section-divider" />
 
      
+
+
+<div className="relative min-h-screen w-full overflow-hidden">
+      {/* 1. Image de fond */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?q=80&w=1974&auto=format&fit=crop')`,
+          // ou votre propre image :
+          // backgroundImage: "url('/votre-image.jpg')",
+        }}
+      >
+        {/* Optionnel : léger overlay pour assombrir / augmenter le contraste */}
+        <div className="absolute inset-0 bg-black/30" />
+      </div>
+
+      {/* 2. Contenu principal + effet glass */}
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-6">
+        <div 
+          className={`
+            backdrop-blur-xl bg-white/10 
+            border border-white/20 
+            rounded-2xl md:rounded-3xl 
+            shadow-2xl shadow-black/30
+            p-8 md:p-12 lg:p-16
+            max-w-lg w-full
+            text-center
+            transition-all duration-500
+            hover:scale-[1.02] hover:shadow-purple-500/20
+          `}
+        >
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6">
+            Votre Titre Ici
+          </h1>
+          
+          <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed">
+            Un beau texte descriptif avec un effet glassmorphism moderne et fluide.
+            Compatible mobile & desktop.
+          </p>
+
+          <button className="
+            px-8 py-4 bg-white/20 backdrop-blur-sm 
+            border border-white/30 rounded-xl 
+            text-white font-medium text-lg
+            hover:bg-white/30 transition-all duration-300
+            active:scale-95
+          ">
+            Découvrir →
+          </button>
+        </div>
+      </div>
+    </div>
+      <div className="section-divider" />
+      <div className="section-divider" />
+      <div className="section-divider" />
+
+  <div className="relative min-h-screen w-full overflow-hidden">
+      {/* 1. Image de fond (tu peux la changer) */}
+      <div
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url('https://images.unsplash.com/photo-1553356084-58ef4a67b2a7?q=80&w=1974&auto=format&fit=crop')`,
+        }}
+      >
+        <div className="absolute inset-0 bg-black/40" /> {/* un peu plus sombre pour que les rayures ressortent */}
+      </div>
+
+      {/* 2. Contenu principal + glass avec rayures verticales */}
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-6">
+        <div
+          className={`
+            relative
+            backdrop-blur-2xl bg-white/5
+            border border-white/15
+            rounded-2xl md:rounded-3xl
+            shadow-2xl shadow-black/40
+            p-8 md:p-12 lg:p-16
+            max-w-lg w-full
+            text-center
+            overflow-hidden
+            transition-all duration-700
+            hover:scale-[1.02] hover:shadow-purple-600/30
+          `}
+        >
+          {/* Effet rayures verticales colorées (chromatic aberration stylisé) */}
+          <div
+            className="absolute inset-0 pointer-events-none opacity-60 mix-blend-screen"
+            style={{
+              background: `
+                repeating-linear-gradient(
+                  90deg,
+                  transparent 0%,
+                  rgba(255, 0, 100, 0.12) 8%,
+                  transparent 16%,
+                  rgba(0, 255, 200, 0.10) 24%,
+                  transparent 32%,
+                  rgba(180, 0, 255, 0.11) 40%,
+                  transparent 48%
+                ),
+                repeating-linear-gradient(
+                  90deg,
+                  transparent 4%,
+                  rgba(255, 180, 0, 0.09) 12%,
+                  transparent 20%,
+                  rgba(0, 200, 255, 0.08) 28%,
+                  transparent 36%
+                )
+              `,
+              backgroundSize: '180px 100%, 140px 100%',
+              animation: 'stripesMove 18s linear infinite',
+            }}
+          />
+
+          {/* Optionnel : léger glow violet/rose sur les bords */}
+          <div className="absolute inset-0 pointer-events-none border-2 border-transparent bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-purple-500/10 opacity-0 hover:opacity-100 transition-opacity duration-700" />
+
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-6 relative z-10">
+            Votre Titre Ici
+          </h1>
+
+          <p className="text-lg md:text-xl text-white/90 mb-8 leading-relaxed relative z-10">
+            Un beau texte descriptif avec un effet glass + rayures verticales
+            colorées style réfraction / chromatic aberration.
+          </p>
+
+          <button
+            className="
+              relative z-10
+              px-8 py-4 bg-white/15 backdrop-blur-md
+              border border-white/25 rounded-xl
+              text-white font-medium text-lg
+              hover:bg-white/25 hover:border-white/40
+              transition-all duration-400
+              active:scale-95
+            "
+          >
+            Découvrir →
+          </button>
+        </div>
+      </div>
+
+
+    </div>
+      <div className="section-divider" />
 
       {/* S6 — Blog */}
       <section className="section-s6 relative py-20 overflow-hidden">

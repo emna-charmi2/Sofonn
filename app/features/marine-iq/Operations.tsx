@@ -40,7 +40,11 @@ export default function Operations() {
                 key={title}
                 className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-5 transition-all duration-200 hover:border-blue-500/40 hover:bg-blue-500/10 hover:shadow-lg hover:shadow-blue-500/10"
               >
-                <span className="material-symbols-outlined text-blue-400 block mb-3 text-[1.8rem]">{icon}</span>
+                            <div className="w-15 h-15 rounded-xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center mb-4">
+    <span className="material-symbols-outlined text-blue-400 text-[3.5rem] leading-none">
+      {icon}
+    </span>
+  </div>
                 <h4 className="text-[0.9rem] font-bold text-white mb-2">{title}</h4>
                 <p className="text-[0.75rem] text-slate-400 leading-relaxed">{desc}</p>
               </div>
@@ -62,8 +66,11 @@ export default function Operations() {
                   wide ? 'sm:col-span-2' : ''
                 }`}
               >
-                <span className="material-symbols-outlined text-blue-400 block mb-3 text-[1.8rem]">{icon}</span>
-                <h4 className="text-[0.9rem] font-bold text-white mb-2">{title}</h4>
+            <div className="w-15 h-15 rounded-xl bg-blue-500/15 border border-blue-500/20 flex items-center justify-center mb-4">
+    <span className="material-symbols-outlined text-blue-400 text-[3.5rem] leading-none">
+      {icon}
+    </span>
+  </div>                <h4 className="text-[0.9rem] font-bold text-white mb-2">{title}</h4>
                 <p className="text-[0.75rem] text-slate-400 leading-relaxed">{desc}</p>
               </div>
             ))}
