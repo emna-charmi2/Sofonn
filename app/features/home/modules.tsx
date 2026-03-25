@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 
 const MODULES = [
   {
@@ -31,237 +31,336 @@ const MODULES = [
     label: 'AI',
     fullName: 'Marine AI',
     desc: 'Leverage artificial intelligence for data analysis, automation, and decision optimization.',
-    href: '/marine-ai',
+    href: '/blog',
     accent: '#e1294c',
   },
 ];
 
-// Taille responsive du cube
-const getCubeSize = () => {
-  if (typeof window !== 'undefined') {
-    if (window.innerWidth < 480) return 240;
-    if (window.innerWidth < 640) return 280;
-    if (window.innerWidth < 768) return 320;
-    if (window.innerWidth < 1024) return 380;
-    if (window.innerWidth < 1280) return 440;
-  }
-  return 500;
-};
+const CUBE_SIZE = 360;
+const HALF = CUBE_SIZE / 2;
 
-export default function MarineCube() {
+const getFaceTransform = (index: number) =>
+  `rotateX(${index * 90}deg) translateZ(${HALF}px)`;
+
+export default function Solutions() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [cubeRotX, setCubeRotX] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [cubeSize, setCubeSize] = useState(500);
+  const [textVisible, setTextVisible] = useState(true);
+
+  const isTransitioningRef = useRef(false);
+  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wheelTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const accumulatedDeltaRef = useRef(0);
+  const sectionRef = useRef<HTMLElement | null>(null);
+
+  const navigateToModule = useCallback((index: number, isScrolling = false) => {
+    if (isTransitioningRef.current || index === currentIndex) return;
+
+    if (scrollTimeoutRef.current) {
+      clearTimeout(scrollTimeoutRef.current);
+    }
+
+    isTransitioningRef.current = true;
+    setTextVisible(false);
+
+    scrollTimeoutRef.current = setTimeout(() => {
+      setCurrentIndex(index);
+      setCubeRotX(index * 90);
+
+      setTimeout(() => {
+        setTextVisible(true);
+        isTransitioningRef.current = false;
+      }, 250);
+    }, isScrolling ? 100 : 180);
+  }, [currentIndex]);
 
   useEffect(() => {
-    const updateSize = () => {
-      setCubeSize(getCubeSize());
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      const rect = section.getBoundingClientRect();
+      const isInViewport =
+        rect.top <= window.innerHeight / 2 &&
+        rect.bottom >= window.innerHeight / 2;
+
+      if (!isInViewport) return;
+
+      const direction = e.deltaY > 0 ? 1 : -1;
+
+      // 🔽 Autoriser le scroll de la page si on est à une extrémité et qu'on veut sortir
+      if (
+        (currentIndex === 0 && direction < 0) ||
+        (currentIndex === MODULES.length - 1 && direction > 0)
+      ) {
+        return; // On laisse la page défiler normalement
+      }
+
+      e.preventDefault(); // Sinon, on bloque le scroll pour naviguer dans les modules
+
+      accumulatedDeltaRef.current += e.deltaY;
+      const threshold = 80;
+
+      if (wheelTimeoutRef.current) {
+        clearTimeout(wheelTimeoutRef.current);
+      }
+
+      if (Math.abs(accumulatedDeltaRef.current) >= threshold) {
+        const newIndex = Math.min(
+          Math.max(currentIndex + direction, 0),
+          MODULES.length - 1
+        );
+
+        if (newIndex !== currentIndex) {
+          navigateToModule(newIndex, true);
+          if (navigator.vibrate) navigator.vibrate(50);
+        }
+
+        accumulatedDeltaRef.current = 0;
+      }
+
+      wheelTimeoutRef.current = setTimeout(() => {
+        accumulatedDeltaRef.current = 0;
+      }, 150);
     };
-    updateSize();
-    window.addEventListener('resize', updateSize);
-    return () => window.removeEventListener('resize', updateSize);
-  }, []);
 
-  const HALF = cubeSize / 2;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      const rect = section.getBoundingClientRect();
+      const isInViewport =
+        rect.top <= window.innerHeight / 2 &&
+        rect.bottom >= window.innerHeight / 2;
 
-  const getFaceTransform = useCallback((index: number): string => {
-    const angle = index * 90;
-    return `rotateX(${angle}deg) translateZ(${HALF}px)`;
-  }, [HALF]);
+      if (!isInViewport) return;
 
-  const navigate = useCallback(
-    (dir: 'next' | 'prev') => {
-      if (isAnimating) return;
-      setIsAnimating(true);
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        // Autoriser la navigation page si on est à une extrémité
+        if (
+          (e.key === 'ArrowUp' && currentIndex === 0) ||
+          (e.key === 'ArrowDown' && currentIndex === MODULES.length - 1)
+        ) {
+          return;
+        }
 
-      setCurrentIndex((prev) =>
-        dir === 'next'
-          ? (prev + 1) % MODULES.length
-          : (prev - 1 + MODULES.length) % MODULES.length
-      );
+        e.preventDefault();
 
-      setCubeRotX((prev) => (dir === 'next' ? prev + 90 : prev - 90));
+        const direction = e.key === 'ArrowDown' ? 1 : -1;
+        const newIndex = Math.min(
+          Math.max(currentIndex + direction, 0),
+          MODULES.length - 1
+        );
 
-      setTimeout(() => setIsAnimating(false), 650);
-    },
-    [isAnimating]
-  );
+        if (newIndex !== currentIndex) {
+          navigateToModule(newIndex, true);
+          if (navigator.vibrate) navigator.vibrate(50);
+        }
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            window.addEventListener('wheel', handleWheel, { passive: false });
+            window.addEventListener('keydown', handleKeyDown);
+          } else {
+            window.removeEventListener('wheel', handleWheel);
+            window.removeEventListener('keydown', handleKeyDown);
+          }
+        });
+      },
+      { threshold: 0.3 }
+    );
+
+    observer.observe(section);
+
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('wheel', handleWheel);
+      window.removeEventListener('keydown', handleKeyDown);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      if (wheelTimeoutRef.current) clearTimeout(wheelTimeoutRef.current);
+    };
+  }, [currentIndex, navigateToModule]);
 
   const mod = MODULES[currentIndex];
 
   return (
-    <section className="min-h-screen py-8 sm:py-12 md:py-16 lg:py-20 px-3 sm:px-4 md:px-6 lg:px-8 bg-[#050c1a] relative overflow-hidden flex items-center">
-      {/* Background glows - responsive */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none" />
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[300px] sm:w-[500px] md:w-[600px] lg:w-[700px] h-[300px] sm:h-[500px] md:h-[600px] lg:h-[700px] bg-blue-500/20 rounded-full blur-[60px] sm:blur-[80px] md:blur-[100px] lg:blur-[120px] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-[250px] sm:w-[400px] md:w-[500px] lg:w-[600px] h-[250px] sm:h-[400px] md:h-[500px] lg:h-[600px] bg-blue-600/10 rounded-full blur-[80px] sm:blur-[100px] md:blur-[120px] lg:blur-[140px] pointer-events-none" />
+    <section
+      ref={sectionRef}
+      className="py-20 px-4 sm:px-8 bg-[#050c1a] relative overflow-hidden scroll-smooth"
+      style={{ scrollSnapAlign: 'start' }}
+    >
+      {/* Background glows */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          background:
+            'radial-gradient(ellipse at top, rgba(59,130,246,0.10) 0%, transparent 60%)',
+        }}
+      />
+      <div
+        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+        style={{ background: 'rgba(59,130,246,0.18)', filter: 'blur(120px)' }}
+      />
+      <div
+        className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
+        style={{ background: 'rgba(37,99,235,0.10)', filter: 'blur(140px)' }}
+      />
 
-      <div className="w-full max-w-7xl mx-auto relative z-10">
-        {/* Titre + Description centrés - responsive */}
-        <div className="text-center mb-8 sm:mb-10 md:mb-12 lg:mb-16">
-          <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white leading-tight tracking-tight px-2 sm:px-4">
-            What you can build with
-            <span className="block sm:inline-block mt-1 sm:mt-2 md:mt-3 bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Header */}
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-5 leading-tight tracking-tight">
+            What you can build with{' '}
+            <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
               Sofonn Solutions
             </span>
           </h2>
-          <p className="mt-3 sm:mt-4 md:mt-5 lg:mt-6 text-xs sm:text-sm md:text-base lg:text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed px-3 sm:px-4">
-            From streamlined logistics to efficient operations, we have everything you need to elevate your business on the high seas.
+          <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
+            From streamlined logistics to efficient operations, we have everything
+            you need to elevate your business on the high seas.
           </p>
+          <div
+            className="rounded-full mx-auto mt-6"
+            style={{
+              width: '4rem',
+              height: '3px',
+              background: 'linear-gradient(to right, #60a5fa, #3b82f6, #2563eb)',
+            }}
+          />
         </div>
 
-        {/* Contenu principal - responsive */}
-        <div 
-          className="flex flex-col lg:flex-row items-center justify-center 
-                     gap-6 sm:gap-8 md:gap-12 lg:gap-16"
+        {/* Carte principale */}
+        <div
+          className="rounded-2xl border p-8 md:p-12 transition-all duration-300 hover:border-blue-500/40 hover:shadow-xl hover:shadow-blue-500/10"
+          style={{
+            background: 'rgba(255,255,255,0.03)',
+            borderColor: 'rgba(255,255,255,0.07)',
+          }}
         >
-          
-          {/* Colonne gauche - Texte responsive */}
-          <div className="w-full lg:flex-1 lg:flex-[2.15] text-center lg:text-left px-3 sm:px-4 md:px-6 lg:px-0">
-            {/* Label en haut */}
-            <div className="inline-flex items-center gap-1.5 sm:gap-2 md:gap-3 mb-3 sm:mb-4 md:mb-5 lg:mb-6">
+          <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+            {/* Texte */}
+            <div
+              className="flex-1 text-center lg:text-left order-2 lg:order-1 w-full"
+              style={{
+                opacity: textVisible ? 1 : 0,
+                transform: textVisible ? 'translateY(0)' : 'translateY(16px)',
+                transition: 'opacity 0.4s ease, transform 0.4s ease',
+              }}
+            >
               <span
-                className="text-[9px] sm:text-[10px] md:text-xs font-semibold tracking-[1px] sm:tracking-[1.5px] md:tracking-[2px] uppercase px-2 sm:px-3 md:px-4 py-0.5 sm:py-1 md:py-1.5 rounded-full border"
+                className="inline-block text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full border mb-4 transition-all duration-300"
                 style={{
                   backgroundColor: `${mod.accent}22`,
                   color: mod.accent,
-                  borderColor: `${mod.accent}44`,
+                  borderColor: `${mod.accent}66`,
+                  boxShadow: `0 0 20px ${mod.accent}33`,
                 }}
               >
                 {mod.label}
               </span>
-            </div>
-
-            {/* FullName - responsive */}
-            <h3 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-white mb-2 sm:mb-3 md:mb-4">
-              {mod.fullName}
-            </h3>
-
-            {/* Container flex pour centrer le desc */}
-            <div className="flex flex-col justify-between" style={{ minHeight: '100px', marginBottom: '1rem' }}>
-              <div className="flex-1"></div>
-              
-              {/* Desc centré - responsive */}
-              <p className="text-xs sm:text-sm md:text-base lg:text-lg text-gray-400 leading-relaxed max-w-lg mx-auto lg:mx-0 px-2 sm:px-0">
+              <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
+                {mod.fullName}
+              </h3>
+              <p className="text-base text-slate-400 leading-relaxed max-w-md mx-auto lg:mx-0 mb-8">
                 {mod.desc}
               </p>
-              
-              <div className="flex-1"></div>
-            </div>
-
-            {/* Lien "Découvrir" en bas - responsive */}
-            <div className="mt-4 sm:mt-5 md:mt-6 lg:mt-8">
               <a
                 href={mod.href}
-                className="group inline-flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm font-medium"
-                style={{ color: mod.accent }}
+                className="group inline-flex items-center gap-2 text-sm font-medium px-6 py-3 rounded-full transition-all duration-300 hover:scale-105"
+                style={{
+                  color: mod.accent,
+                  backgroundColor: `${mod.accent}11`,
+                  border: `1px solid ${mod.accent}33`,
+                }}
               >
-                Découvrir {mod.label}
+                <span>Discover {mod.label}</span>
                 <svg
-                  className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 transition-transform group-hover:translate-x-1"
+                  className="w-4 h-4 transition-transform group-hover:translate-x-1"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2.5}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
                 </svg>
               </a>
-            </div>
-          </div>
 
-          {/* Colonne droite - Cube + contrôles responsive */}
-          <div className="w-full lg:flex-1 lg:flex-[1.05] flex flex-col items-center">
-            
-            {/* Cube Container avec espace suffisant pour les flèches */}
-            <div className="relative flex items-center justify-center px-2 sm:px-4" 
-                 style={{ margin: '20px 0' }}>
-              <div
-                style={{
-                  width: cubeSize,
-                  height: cubeSize,
-                  position: 'relative',
-                  transformStyle: 'preserve-3d',
-                  transform: `rotateX(${cubeRotX}deg)`,
-                  transition: `transform 650ms cubic-bezier(0.32, 0.72, 0, 1)`,
-                }}
-              >
-                {MODULES.map((module, idx) => (
-                  <div
-                    key={module.label}
+              {/* Dots */}
+              <div className="flex gap-3 mt-10 justify-center lg:justify-start">
+                {MODULES.map((m, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => navigateToModule(idx)}
+                    aria-label={`Go to ${m.fullName}`}
+                    className="transition-all duration-500 hover:scale-110 cursor-pointer"
                     style={{
-                      position: 'absolute',
-                      width: '100%',
-                      height: '100%',
-                      transform: getFaceTransform(idx),
-                      backfaceVisibility: 'visible',
-                      borderRadius: '12px sm:16px md:20px lg:24px',
-                      overflow: 'hidden',
-                      boxShadow: '0 20px 35px -10px rgba(0,0,0,0.3)',
+                      width: idx === currentIndex ? '32px' : '8px',
+                      height: '8px',
+                      borderRadius: '4px',
+                      backgroundColor:
+                        idx === currentIndex ? mod.accent : 'rgba(255,255,255,0.25)',
+                      boxShadow: idx === currentIndex ? `0 0 10px ${mod.accent}` : 'none',
                     }}
-                  >
-                    <img
-                      src={module.src}
-                      alt={module.fullName}
-                      className="w-full h-full object-cover"
-                      style={{ borderRadius: '12px' }}
-                    />
-                  </div>
+                  />
                 ))}
               </div>
-
-              {/* Flèche Haut (Previous) - responsive avec meilleur positionnement */}
-              <button
-                onClick={() => navigate('prev')}
-                disabled={isAnimating}
-                className="absolute -top-10 sm:-top-12 md:-top-16 lg:-top-20 left-1/2 -translate-x-1/2 z-20 
-                           bg-white/10 hover:bg-white/25 text-white p-2 sm:p-3 md:p-4 lg:p-5 rounded-full 
-                           transition-all disabled:opacity-40 shadow-xl backdrop-blur-sm
-                           active:scale-95 transform transition-transform"
-                aria-label="Previous"
-              >
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 15l7-7 7 7" />
-                </svg>
-              </button>
-
-              {/* Flèche Bas (Next) - responsive avec meilleur positionnement */}
-              <button
-                onClick={() => navigate('next')}
-                disabled={isAnimating}
-                className="absolute -bottom-10 sm:-bottom-12 md:-bottom-16 lg:-bottom-20 left-1/2 -translate-x-1/2 z-20 
-                           bg-white/10 hover:bg-white/25 text-white p-2 sm:p-3 md:p-4 lg:p-5 rounded-full 
-                           transition-all disabled:opacity-40 shadow-xl backdrop-blur-sm
-                           active:scale-95 transform transition-transform"
-                aria-label="Next"
-              >
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6 lg:w-7 lg:h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
             </div>
-            
-            {/* Indicateur de navigation pour petits écrans */}
-            <div className="flex gap-2 mt-6 sm:mt-8 lg:hidden">
-              {MODULES.map((_, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => {
-                    if (!isAnimating && idx !== currentIndex) {
-                      const diff = idx - currentIndex;
-                      const direction = diff > 0 ? 'next' : 'prev';
-                      navigate(direction);
-                    }
+
+            {/* Cube 3D */}
+            <div className="order-1 lg:order-2 flex-shrink-0 flex justify-center">
+              <div
+                style={{
+                  width: CUBE_SIZE,
+                  height: CUBE_SIZE,
+                  perspective: '900px',
+                }}
+              >
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    position: 'relative',
+                    transformStyle: 'preserve-3d',
+                    transform: `rotateX(${cubeRotX}deg)`,
+                    transition: 'transform 0.55s cubic-bezier(0.32, 0.72, 0, 1)',
                   }}
-                  className={`w-2 h-2 rounded-full transition-all ${
-                    idx === currentIndex 
-                      ? 'w-6 bg-white' 
-                      : 'bg-white/40 hover:bg-white/60'
-                  }`}
-                  disabled={isAnimating}
-                  aria-label={`Go to module ${idx + 1}`}
-                />
-              ))}
+                >
+                  {MODULES.map((module, idx) => (
+                    <div
+                      key={idx}
+                      style={{
+                        position: 'absolute',
+                        width: '100%',
+                        height: '100%',
+                        transform: getFaceTransform(idx),
+                        overflow: 'hidden',
+                        borderRadius: '16px',
+                        border: `2px solid ${
+                          idx === currentIndex
+                            ? module.accent
+                            : 'rgba(255,255,255,0.15)'
+                        }`,
+                        transition: 'border-color 0.3s ease',
+                        boxShadow:
+                          idx === currentIndex
+                            ? `0 0 30px ${module.accent}44`
+                            : 'none',
+                      }}
+                    >
+                      <img
+                        src={module.src}
+                        alt={module.fullName}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>

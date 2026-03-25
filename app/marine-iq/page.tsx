@@ -27,7 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }
         .card:hover { background: rgba(255,255,255,0.03); }
 
-        .liquid { background: radial-gradient(circle at top left, rgba(0,123,255,0.06) 0%, transparent 55%); }
+        .liquid { background: radial-gradient(circle at top left, var(--accent-glow) 0%, transparent 55%); }
         @keyframes ping { 0%{transform:scale(1);opacity:.6} 100%{transform:scale(2.2);opacity:0} }
         .ping-anim { animation: ping 1.2s ease-out infinite; }
         .grad-text {
@@ -35,12 +35,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         }
         .section-divider {
           width: 3.5rem; height: 3px;
-          background: #007bff;
+          background: var(--accent);
           border-radius: 9999px;
           margin: 0.75rem auto 3.5rem;
         }
       `}</style>
   <section
+      className="section"
       style={{
         minHeight: '100vh',
         display: 'flex',
@@ -63,7 +64,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       }}>
         Operational{' '}
         <span style={{
-          background: 'linear-gradient(90deg, #007bff 0%, #f59e0b 100%)',
+          background: 'linear-gradient(90deg, var(--accent) 0%, var(--accent-light) 100%)',
           WebkitBackgroundClip: 'text',
           WebkitTextFillColor: 'transparent',
           backgroundClip: 'text',
@@ -75,7 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       {/* Subtitle */}
       <p style={{
         fontSize: '0.95rem',
-        color: '#94a3b8',
+        color: 'var(--text-secondary)',
         maxWidth: 420,
         lineHeight: 1.7,
         marginBottom: '2rem',
@@ -91,15 +92,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           display: 'flex',
           alignItems: 'center',
           gap: '0.4rem',
-          background: '#007bff',
-          color: '#fff',
+          background: 'var(--accent)',
+          color: 'var(--text-primary)',
           fontWeight: 700,
           fontSize: '0.9rem',
           padding: '0.8rem 1.8rem',
           borderRadius: '0.6rem',
           border: 'none',
           cursor: 'pointer',
-          boxShadow: '0 0 0 rgba(0,123,255,0)',
+          boxShadow: '0 0 0 var(--accent-glow)',
           transition: 'box-shadow 0.2s',
         }}
          
@@ -111,10 +112,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </button>
 
         <button style={{
-          background: 'rgba(15,23,42,0.6)',
+          background: 'var(--bg-card)',
           backdropFilter: 'blur(16px)',
-          border: '1px solid rgba(255,255,255,0.08)',
-          color: '#94a3b8',
+          border: '1px solid var(--border-card)',
+          color: 'var(--text-secondary)',
           fontWeight: 700,
           fontSize: '0.9rem',
           padding: '0.8rem 1.8rem',

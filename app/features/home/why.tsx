@@ -31,59 +31,37 @@ export default function Why() {
 
       <section className="py-28 px-4 sm:px-8 bg-[#050c1a] relative overflow-hidden">
         {/* Background glows */}
-        <div
-          className="absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              "radial-gradient(ellipse at top, rgba(59,130,246,0.10) 0%, transparent 60%)",
-          }}
-        />
-        <div
-          className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
-          style={{ background: "rgba(59,130,246,0.18)", filter: "blur(120px)" }}
-        />
-        <div
-          className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
-          style={{ background: "rgba(37,99,235,0.10)", filter: "blur(140px)" }}
-        />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-125 h-125 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto relative z-10">
-          {/* Header */}
+        <div className="w-[80%] max-w-480 mx-auto relative z-10">
+          {/* Header avec sous-titre */}
           <div className="text-center mb-16">
-            <span className="inline-block bg-blue-500/10 text-blue-400 text-sm font-semibold tracking-wide uppercase rounded-full px-4 py-1.5 mb-5 border border-blue-500/20">
-              Our Advantage
-            </span>
-            <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-5 leading-tight tracking-tight">
+            <h2 className="text-[clamp(2.4rem,5vw,3.8rem)] font-extrabold text-white mb-5 leading-tight tracking-tight">
               Why Choose Us?
             </h2>
-            <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
+            <div className="w-16 h-0.75 bg-linear-to-r from-blue-400 via-blue-500 to-blue-600 rounded-full mx-auto mt-6" />
+            <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed mt-8">
               We tailor our services to your needs, ensuring maritime excellence,
               compliance, and efficiency.
             </p>
-            <div
-              className="rounded-full mx-auto mt-6"
-              style={{
-                width: "4rem",
-                height: "3px",
-                background: "linear-gradient(to right, #60a5fa, #3b82f6, #2563eb)",
-              }}
-            />
           </div>
 
-          {/* Cards — 4 columns */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {/* Cartes agrandies */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {WHY_ITEMS.map(({ icon, title, desc }, i) => (
               <div
                 key={i}
-                className="group flex flex-col items-center text-center p-7 rounded-2xl border transition-all duration-200 hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-500/40 hover:bg-blue-500/10"
+                className="group flex flex-col items-center text-center p-8 rounded-2xl h border transition-all duration-200 hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-500/40 hover:bg-blue-500/10"
                 style={{
                   background: "rgba(255,255,255,0.03)",
                   borderColor: "rgba(255,255,255,0.07)",
                 }}
               >
-                {/* Icon */}
+                {/* Icône plus grande */}
                 <div
-                  className="w-14 h-14 rounded-xl flex items-center justify-center mb-5"
+                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6"
                   style={{
                     background: "rgba(59,130,246,0.15)",
                     border: "1px solid rgba(59,130,246,0.20)",
@@ -91,19 +69,19 @@ export default function Why() {
                 >
                   <span
                     className="material-symbols-outlined leading-none"
-                    style={{ fontSize: "2rem", color: "#60a5fa" }}
+                    style={{ fontSize: "2.5rem", color: "#60a5fa" }}
                   >
                     {icon}
                   </span>
                 </div>
 
-                {/* Title */}
-                <h3 className="text-lg font-bold text-white leading-snug mb-2">
+                {/* Titre agrandi */}
+                <h3 className="text-xl font-bold text-white leading-snug mb-3">
                   {title}
                 </h3>
 
-                {/* Desc */}
-                <p className="text-sm text-slate-400 leading-relaxed">{desc}</p>
+                {/* Description agrandie */}
+                <p className="text-base text-slate-400 leading-relaxed">{desc}</p>
               </div>
             ))}
           </div>

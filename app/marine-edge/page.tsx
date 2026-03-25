@@ -62,23 +62,23 @@ const strengths = [
 
 export default function MarineEdgePage() {
   return (
-    <div className="font-sans bg-[#f8fafc] dark:bg-[#020617] text-slate-900 dark:text-slate-100">
+    <div className="font-sans section" style={{ color: 'var(--text-primary)' }}>
 
       {/* ── NAVBAR ────────────────────────────────────────────────────────── */}
-      <nav className="fixed top-0 w-full z-50 bg-white/80 dark:bg-[#020617]/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800">
+      <nav className="fixed top-0 w-full z-50 backdrop-blur-md border-b" style={{ background: 'var(--bg-level-1)', borderColor: 'var(--border-card)' }}>
         <div className="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <span className="material-icons text-[#00d4ff] text-3xl">anchor</span>
+            <span className="material-icons text-[var(--text-accent)] text-3xl">anchor</span>
             <span className="text-xl font-bold tracking-tight">
-              MARINE<span className="text-[#00d4ff]">EDGE</span>
+              MARINE<span className="text-[var(--text-accent)]">EDGE</span>
             </span>
           </div>
           <div className="hidden md:flex items-center space-x-8 text-sm font-medium">
-            <a href="#intro" className="hover:text-[#00d4ff] transition-colors">Solution</a>
-            <a href="#structure" className="hover:text-[#00d4ff] transition-colors">Infrastructure</a>
-            <a href="#strengths" className="hover:text-[#00d4ff] transition-colors">Strengths</a>
-            <a href="#demo" className="hover:text-[#00d4ff] transition-colors">Demo</a>
-            <button className="bg-[#00d4ff] hover:bg-[#00d4ff]/90 text-slate-900 px-6 py-2 rounded font-semibold transition-all">
+            <a href="#intro" className="hover:text-[var(--text-accent)] transition-colors">Solution</a>
+            <a href="#structure" className="hover:text-[var(--text-accent)] transition-colors">Infrastructure</a>
+            <a href="#strengths" className="hover:text-[var(--text-accent)] transition-colors">Strengths</a>
+            <a href="#demo" className="hover:text-[var(--text-accent)] transition-colors">Demo</a>
+            <button className="px-6 py-2 rounded font-semibold transition-all" style={{ background: 'var(--accent)', color: 'var(--text-primary)' }}>
               Contact Us
             </button>
           </div>
@@ -95,20 +95,20 @@ export default function MarineEdgePage() {
             className="object-cover opacity-60 dark:opacity-40"
             priority
           />
-          <div className="absolute inset-0 bg-linear-to-r from-[#f8fafc] dark:from-[#020617] via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-linear-to-r from-[var(--bg-level-1)] via-transparent to-transparent" />
         </div>
         <div className="relative z-10 max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12">
           <div className="space-y-6">
             <h1 className="text-6xl md:text-8xl font-bold tracking-tighter leading-none">
               MARINE<br />
-              <span className="text-[#00d4ff]">EDGE</span>
+              <span className="text-[var(--text-accent)]">EDGE</span>
             </h1>
-            <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 max-w-lg leading-relaxed">
+            <p className="text-xl md:text-2xl max-w-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
               Revolutionizing maritime operations with real-time edge intelligence
               and seamless cloud integration.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-              <button className="px-8 py-4 bg-[#00d4ff] text-slate-900 font-bold rounded-lg shadow-lg shadow-[#00d4ff]/20 hover:scale-105 transition-transform">
+              <button className="px-8 py-4 font-bold rounded-lg hover:scale-105 transition-transform" style={{ background: 'var(--accent)', color: 'var(--text-primary)' }}>
                 Explore Technology
               </button>
               <button className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/20 text-white font-bold rounded-lg hover:bg-white/20 transition-all">
@@ -120,12 +120,12 @@ export default function MarineEdgePage() {
       </section>
 
       {/* ── INTRO ─────────────────────────────────────────────────────────── */}
-      <section id="intro" className="py-24 relative overflow-hidden bg-slate-50 dark:bg-slate-900/50">
+      <section id="intro" className="py-24 relative overflow-hidden section">
         <div className="max-w-4xl mx-auto px-6 text-center space-y-8">
           <h2 className="text-3xl md:text-4xl font-bold">
             Bridging the Gap Between Ocean and Insight
           </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+          <p className="text-lg leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
             Marine Edge provides an end-to-end data ecosystem designed for the harshest
             environments. From vessel-based edge computing to global cloud synchronization,
             we empower maritime fleets with AI-driven analytics, ensuring safety, efficiency,
@@ -139,9 +139,9 @@ export default function MarineEdgePage() {
 
     <section className="relative bg-linear-to-b from-slate-950 via-indigo-950/40 to-slate-950 py-16 px-4 md:px-8 overflow-hidden">
       {/* Fond subtil */}
-      <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute inset-0 bg-[radial-linear(circle_at_30%_20%,#6366f1_0%,transparent_40%)]"></div>
-        <div className="absolute inset-0 bg-[radial-linear(circle_at_70%_80%,#a855f7_0%,transparent_40%)]"></div>
+        <div className="absolute inset-0 opacity-10 pointer-events-none">
+        <div className="absolute inset-0 bg-[radial-linear(circle_at_30%_20%,var(--accent)_0%,transparent_40%)]"></div>
+        <div className="absolute inset-0 bg-[radial-linear(circle_at_70%_80%,var(--accent-light)_0%,transparent_40%)]"></div>
       </div>
 
       <div className="relative max-w-7xl mx-auto">
@@ -309,8 +309,8 @@ export default function MarineEdgePage() {
               <ul className="space-y-6">
                 {strengths.map((item) => (
                   <li key={item.title} className="flex items-start space-x-4">
-                    <div className="shrink-0 w-8 h-8 rounded-full bg-[#00d4ff]/20 flex items-center justify-center">
-                      <span className="material-icons text-[#00d4ff] text-sm">check</span>
+                    <div className="shrink-0 w-8 h-8 rounded-full bg-[var(--accent-dim)] flex items-center justify-center">
+                      <span className="material-icons text-[var(--text-accent)] text-sm">check</span>
                     </div>
                     <div>
                       <h4 className="font-bold text-lg">{item.title}</h4>
@@ -336,7 +336,7 @@ export default function MarineEdgePage() {
       </section>
 
       {/* ── DEMO ──────────────────────────────────────────────────────────── */}
-      <section id="demo" className="py-24 bg-[#f8fafc] dark:bg-[#020617]">
+      <section id="demo" className="py-24 section">
         <div className="max-w-5xl mx-auto px-6">
           <div className="text-center mb-12">
             <h2 className="text-4xl font-bold mb-4">See It In Action</h2>
@@ -351,7 +351,7 @@ export default function MarineEdgePage() {
               fill
               className="object-cover opacity-50 group-hover:scale-105 transition-transform duration-700"
             />
-            <div className="relative z-10 w-24 h-24 bg-[#00d4ff] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl shadow-[#00d4ff]/40">
+            <div className="relative z-10 w-24 h-24 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform shadow-xl" style={{ background: 'var(--accent)' }}>
               <span className="material-icons text-slate-900 text-5xl translate-x-1">play_arrow</span>
             </div>
           </div>
@@ -360,7 +360,7 @@ export default function MarineEdgePage() {
 
       {/* ── CTA ───────────────────────────────────────────────────────────── */}
       <section className="py-24 relative overflow-hidden">
-        <div className="absolute inset-0 bg-[#00d4ff]/10 -skew-y-3 transform translate-y-12" />
+        <div className="absolute inset-0 bg-[var(--accent-dim)] -skew-y-3 transform translate-y-12" />
         <div className="relative z-10 max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-4xl md:text-5xl font-bold mb-8">
             Ready to Optimize Your Fleet?
@@ -370,7 +370,7 @@ export default function MarineEdgePage() {
             the future of sea travel.
           </p>
           <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <button className="px-10 py-5 bg-[#00d4ff] text-slate-900 font-bold rounded-xl text-lg hover:shadow-2xl hover:shadow-[#00d4ff]/30 transition-all">
+            <button className="px-10 py-5 font-bold rounded-xl text-lg hover:shadow-2xl transition-all" style={{ background: 'var(--accent)', color: 'var(--text-primary)' }}>
               Request a Custom Demo
             </button>
             <button className="px-10 py-5 border-2 border-slate-700 dark:text-white font-bold rounded-xl text-lg hover:bg-slate-800 transition-all">

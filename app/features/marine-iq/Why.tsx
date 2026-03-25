@@ -81,8 +81,8 @@ export default function WhyIQ() {
 
                   {/* Text */}
                   <div>
-                    <h4 className="text-[1.4rem] font-bold text-white mb-2 leading-snug">{title}</h4>
-                    <p className="text-[1.1rem] text-slate-400 leading-relaxed">{desc}</p>
+                      <h4 className="text-[1.15rem] font-bold text-white mb-1 pt-4">{title}</h4>
+                  <p className="text-[1.05rem] text-slate-500 leading-relaxed">{desc}</p>
                   </div>
                 </div>
               ))}

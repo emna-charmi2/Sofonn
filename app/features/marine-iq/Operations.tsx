@@ -36,7 +36,7 @@ export default function Operations() {
         {/* Section For Seafarers */}
         <div className="mb-12">
           <div className="flex items-center gap-4 mb-6">
-            <h3 className="text-[1.1rem] font-extrabold text-white whitespace-nowrap">For Seafarers</h3>
+            <h3 className="text-[1.5rem] text-2xl font-extrabold text-white whitespace-nowrap">For Seafarers</h3>
             <div className="flex-1 h-px bg-white/[0.07]" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -51,8 +51,8 @@ export default function Operations() {
                   </span>
                 </div>
                 <div>
-                  <h4 className="text-[1.4rem] font-bold text-white mb-2 leading-snug">{title}</h4>
-                  <p className="text-[1.1rem] text-slate-400 leading-relaxed">{desc}</p>
+                 <h4 className="text-[1.15rem] font-bold text-white mb-1 pt-4">{title}</h4>
+                  <p className="text-[1.05rem] text-slate-500 leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}
@@ -62,7 +62,7 @@ export default function Operations() {
         {/* Section For Shipping Companies */}
         <div>
           <div className="flex items-center gap-4 mb-6">
-            <h3 className="text-[1.1rem] font-extrabold text-white whitespace-nowrap">For Shipping Companies & Vessels</h3>
+            <h3 className="text-[1.5rem] font-extrabold text-white whitespace-nowrap">For Shipping Companies & Vessels</h3>
             <div className="flex-1 h-px bg-white/[0.07]" />
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -79,8 +79,8 @@ export default function Operations() {
                   </span>
                 </div>
                 <div>
-                  <h4 className="text-[1.4rem] font-bold text-white mb-2 leading-snug">{title}</h4>
-                  <p className="text-[1.1rem] text-slate-400 leading-relaxed">{desc}</p>
+                  <h4 className="text-[1.15rem] font-bold text-white mb-1 pt-4">{title}</h4>
+                  <p className="text-[1.05rem] text-slate-500 leading-relaxed">{desc}</p>
                 </div>
               </div>
             ))}

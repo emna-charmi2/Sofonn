@@ -63,8 +63,8 @@ export default function Modules() {
 
                   {/* Text */}
                   <div>
-                    <h4 className="text-[1.4rem] font-bold text-white mb-2 leading-snug">{title}</h4>
-                    <p className="text-[1.1rem] text-slate-400 leading-relaxed">{desc}</p>
+                     <h4 className="text-[1rem] font-bold text-white mb-1 pt-4">{title}</h4>
+                  <p className="text-[0.8rem] text-slate-500 leading-relaxed">{desc}</p>
                   </div>
                 </div>
               ))}

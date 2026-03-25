@@ -1,6 +1,6 @@
 export default function CTA(){
     return(
-          <section className="px-6 lg:px-20 py-24 text-center bg-[#FFC700]/[0.03] border-t border-white/[0.07]">
+          <section className="px-6 lg:px-20 py-24 text-center border-t border-white/[0.07]">
         <div className="max-w-2xl mx-auto">
           <h2 className="text-[clamp(2.5rem,6vw,4rem)] font-black text-white leading-[1.1] mb-4">
             Join the Maritime Revolution

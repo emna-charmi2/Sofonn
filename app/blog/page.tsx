@@ -139,7 +139,7 @@ export default function BlogPage() {
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
-        body { font-family: 'Inter', system-ui, sans-serif; background: #07090f; color: #e2e8f0; }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg-base); color: var(--text-primary); }
         h1, h2, h3 { font-family: 'Syne', sans-serif; }
         .material-symbols-outlined { font-family: "Material Symbols Outlined"; }
       ` }} />
@@ -153,7 +153,7 @@ export default function BlogPage() {
       )}
 
       {/* Mobile sidebar drawer */}
-      <aside className={`fixed top-0 left-0 h-full w-80 z-50 bg-[#0b0f1a] border-r border-white/10 overflow-y-auto p-6 transition-transform duration-300 lg:hidden ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <aside className={`fixed top-0 left-0 h-full w-80 z-50 border-r overflow-y-auto p-6 transition-transform duration-300 lg:hidden ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`} style={{ background: 'var(--bg-level-1)', borderColor: 'var(--border-card)' }}>
         <div className="flex justify-between items-center mb-8">
           <h2 className="text-lg font-semibold text-white">Filtres & Infos</h2>
           <button onClick={() => setSidebarOpen(false)} className="text-slate-400 hover:text-white">
@@ -169,7 +169,7 @@ export default function BlogPage() {
         />
       </aside>
 
-      <section className="min-h-screen bg-[#07090f] pt-16 pb-20 px-4 sm:px-6 lg:pt-20">
+      <section className="min-h-screen section pt-16 pb-20 px-4 sm:px-6 lg:pt-20">
         <div className="max-w-7xl mx-auto">
 
           {/* Mobile header */}
@@ -270,7 +270,8 @@ export default function BlogPage() {
                     return (
                       <article
                         key={article.id}
-                        className="group bg-[#0f131f] border border-white/10 rounded-3xl overflow-hidden flex flex-col hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1"
+                        className="group rounded-3xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1"
+                        style={{ background: 'var(--bg-level-1)', border: '1px solid var(--border-card)' }}
                       >
                         <div className="relative h-56 overflow-hidden">
                           <img
@@ -305,7 +306,7 @@ export default function BlogPage() {
                             </div>
                           </div>
 
-                          <h3 className="font-semibold text-lg leading-tight text-white group-hover:text-blue-400 transition-colors line-clamp-3">
+                          <h3 className="font-semibold text-lg leading-tight group-hover:text-[var(--text-accent)] transition-colors line-clamp-3" style={{ color: 'var(--text-primary)' }}>
                             {article.title}
                           </h3>
 
@@ -326,7 +327,7 @@ export default function BlogPage() {
                               </div>
                             </div>
 
-                            <button className="flex items-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-blue-500/10 border border-white/10 hover:border-blue-500/30 rounded-2xl text-sm font-medium text-blue-400 transition-all">
+                            <button className="flex items-center gap-2 px-5 py-2.5 hover:bg-[var(--accent-dim)] rounded-2xl text-sm font-medium transition-all" style={{ border: '1px solid var(--border-card)', color: 'var(--text-accent)', background: 'var(--bg-card)' }}>
                               Read full
                               <Ms className="text-lg">arrow_forward</Ms>
                             </button>
@@ -376,7 +377,7 @@ function SidebarContent({
   return (
     <div className="space-y-10">
       {/* Quick stats */}
-      <div className="grid grid-cols-3 gap-4 bg-white/[0.025] border border-white/10 rounded-3xl p-5">
+      <div className="grid grid-cols-3 gap-4 rounded-3xl p-5" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)' }}>
         {[
           { icon: "article", label: "Articles", value: "124" },
           { icon: "groups", label: "Readers", value: "18k" },

@@ -10,9 +10,10 @@ const Badge = ({
   color: string;
 }) => (
   <div
-    className="px-2.5 py-1.5 text-white font-bold text-base"
+    className="px-2.5 py-1.5 font-bold text-base"
     style={{
-      backgroundColor: color,
+      backgroundColor: color || 'var(--accent)',
+      color: 'var(--text-primary)',
       transform: "skewX(-15deg)",
     }}
   >
@@ -32,15 +33,15 @@ const DeviceCard = ({
   style?: React.CSSProperties;
 }) => (
   <div
-    className="border border-white/80 rounded-xl flex flex-col items-center w-[220px] bg-transparent"
-    style={style}
+    className="rounded-xl flex flex-col items-center w-[220px]"
+    style={{ border: '1px solid var(--border-card)', background: 'var(--bg-card)', ...style }}
   >
     <img
       src={imgSrc}
       alt={imgAlt}
       className="w-full h-[120px] object-cover rounded mb-5"
     />
-    <div className="font-bold text-sm flex items-center gap-2 text-white">
+    <div className="font-bold text-sm flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
       {label}
     </div>
   </div>
@@ -49,11 +50,11 @@ const DeviceCard = ({
 export default function NavtorEcosystem() {
   return (
     <div
-      className="mx-auto px-4 lg:px-8 py-8 space-y-8 bg-[#07090f] flex flex-col items-center  font-sans"
-      style={{ backgroundColor: "#0288c7"}}
+      className="mx-auto px-4 lg:px-8 py-8 space-y-8 section flex flex-col items-center font-sans"
+      style={{ color: 'var(--text-primary)' }}
     >
       {/* Header */}
-      <div className="text-center max-w-2xl mb-8 text-white">
+      <div className="text-center max-w-2xl mb-8" style={{ color: 'var(--text-primary)' }}>
         <h1 className="text-2xl font-bold mb-2 leading-relaxed">
           NAVTOR&apos;s integrated digital ecosystem
           <br />
@@ -99,13 +100,13 @@ export default function NavtorEcosystem() {
 
           {/* SofonnCloud at the top */}
           <div className="flex items-center gap-10 mb-0">
-            <div className="border-2 border-white/90 rounded-[50px] px-10 py-5 flex flex-col items-center">
+            <div className="rounded-[50px] px-10 py-5 flex flex-col items-center" style={{ border: '2px solid var(--border-card)', background: 'var(--bg-card)' }}>
               <img
                 src="https://storage.googleapis.com/banani-generated-images/generated-images/a4d6fc81-fcd1-4984-a4f3-796aeba9e542.jpg"
                 alt="SofonnCloud"
                 className="w-16 h-20 object-contain mb-2.5"
               />
-              <div className="font-bold text-sm flex items-center gap-2 text-white">
+              <div className="font-bold text-sm flex items-center gap-2" style={{ color: 'var(--text-primary)' }}>
                 SofonnCloud
               </div>
             </div>

@@ -11,65 +11,102 @@
   --font-nunito-sans:      var(--font-nunito-sans-next), sans-serif;
   --font-public-sans:      var(--font-public-sans-next), sans-serif;
 }
-/* Opti
+
 /* ============================================================
-   1. CSS VARIABLES — DARK MODE (default)
+   ANIMATIONS GLOBALES
+   ============================================================ */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+@keyframes float-delay {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes float-delay-2 {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-18px); }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes spin-slow-reverse {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(-360deg); }
+}
+
+.animate-float {
+  animation: float 4s ease-in-out infinite;
+}
+
+.animate-float-delay {
+  animation: float-delay 5s ease-in-out infinite;
+}
+
+.animate-float-delay-2 {
+  animation: float-delay-2 4.5s ease-in-out infinite;
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+.animate-spin-slow-reverse {
+  animation: spin-slow-reverse 15s linear infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* ============================================================
+   1. CSS VARIABLES — DARK MODE (default) + COULEUR UNIFORME
    ============================================================ */
 :root,
 [data-theme="dark"] {
+  /* ── COULEUR DE FOND PRINCIPALE POUR TOUTES LES SECTIONS ── */
+  --bg-section: #231b33;
 
-  /* Background layers — each section uses a different level */
-  --bg-base:        #080b18;   /* deepest base */
-  --bg-level-1:     #0a0d1f;   /* section A */
-  --bg-level-2:     #0d1028;   /* section B */
-  --bg-level-3:     #0f1330;   /* section C — slightly lighter navy */
-  --bg-level-4:     #0c0f22;   /* section D */
-  --bg-level-5:     #111526;   /* section E — gray-navy */
+  /* Autres variables utiles (tu peux les garder ou les supprimer si tu n'en as plus besoin) */
+  --bg-base:        #080b18;
+  --bg-level-1:     #0a0d1f;
+  --bg-level-2:     #0d1028;
+  --bg-level-3:     #0f1330;
+  --bg-level-4:     #0c0f22;
+  --bg-level-5:     #111526;
   --bg-card:        rgba(255, 255, 255, 0.03);
   --bg-card-hover:  rgba(255, 255, 255, 0.055);
 
-  /* Section gradients — subtle diagonal shifts */
-  --gradient-s1: linear-gradient(150deg, #080b18 0%, #0a0d2e 100%);
-  --gradient-s2: linear-gradient(135deg, #06081a 0%, #0c1130 60%, #080c22 100%);
-  --gradient-s3: linear-gradient(160deg, #0d1020 0%, #111830 50%, #0a0e20 100%);
-  --gradient-s4: linear-gradient(145deg, #0f1225 0%, #0a0d1e 100%);
-  --gradient-s5: linear-gradient(155deg, #0b0f20 0%, #131728 60%, #0d1122 100%);
-  --gradient-s6: linear-gradient(140deg, #080b18 0%, #0e1228 100%);
+  --accent:         #3b82f6;
+  --accent-light:   #60a5fa;
+  --accent-dim:     rgba(59, 130, 246, 0.15);
+  --accent-border:  rgba(59, 130, 246, 0.2);
+  --accent-glow:    rgba(59, 130, 246, 0.08);
 
-  /* Accent */
- --accent: #3b82f6;
-  --accent-light: #60a5fa;
-  --accent-dim: rgba(59, 130, 246, 0.15);
-  --accent-border: rgba(59, 130, 246, 0.2);
-  --accent-glow: rgba(59, 130, 246, 0.08);
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
-  --text-accent: #60a5fa;
-  /* Text */
   --text-primary:   #f1f5f9;
   --text-secondary: #94a3b8;
   --text-muted:     #475569;
   --text-accent:    #60a5fa;
 
-  
-  /* Borders */
   --border-subtle:  rgba(255, 255, 255, 0.06);
   --border-card:    rgba(255, 255, 255, 0.08);
   --border-accent:  rgba(59, 130, 246, 0.25);
 
-  /* Divider between sections */
   --divider: linear-gradient(90deg, transparent, rgba(59,130,246,0.25), transparent);
-
-  /* Shadows */
   --shadow-card:    0 4px 32px rgba(0, 0, 0, 0.45);
   --shadow-glow:    0 0 40px rgba(59, 130, 246, 0.12);
 }
 
 /* ============================================================
-   2. CSS VARIABLES — LIGHT MODE
+   2. CSS VARIABLES — LIGHT MODE (si tu l'utilises un jour)
    ============================================================ */
 [data-theme="light"] {
+  --bg-section:     #f8fafc;     /* tu peux changer si tu veux un light mode */
 
   --bg-base:        #f8fafc;
   --bg-level-1:     #ffffff;
@@ -77,22 +114,9 @@
   --bg-level-3:     #e8f0fe;
   --bg-level-4:     #f8fafc;
   --bg-level-5:     #eef2ff;
-  --bg-card:        rgba(0, 0, 0, 0.025);
-  --bg-card-hover:  rgba(0, 0, 0, 0.045);
-
-  --gradient-s1: linear-gradient(150deg, #ffffff 0%, #f0f4ff 100%);
-  --gradient-s2: linear-gradient(135deg, #f8fafc 0%, #e8f0fe 60%, #f1f5ff 100%);
-  --gradient-s3: linear-gradient(160deg, #f1f5f9 0%, #e0e9ff 50%, #f8fafc 100%);
-  --gradient-s4: linear-gradient(145deg, #eef2ff 0%, #f8fafc 100%);
-  --gradient-s5: linear-gradient(155deg, #f0f4ff 0%, #e8f0fe 60%, #f5f8ff 100%);
-  --gradient-s6: linear-gradient(140deg, #ffffff 0%, #eef2ff 100%);
 
   --accent:         #2563eb;
   --accent-light:   #3b82f6;
-  --accent-dim:     rgba(37, 99, 235, 0.08);
-  --accent-border:  rgba(37, 99, 235, 0.2);
-  --accent-glow:    rgba(37, 99, 235, 0.06);
-
   --text-primary:   #0f172a;
   --text-secondary: #475569;
   --text-muted:     #94a3b8;
@@ -100,53 +124,49 @@
 
   --border-subtle:  rgba(0, 0, 0, 0.06);
   --border-card:    rgba(0, 0, 0, 0.08);
-  --border-accent:  rgba(37, 99, 235, 0.2);
-
-  --divider: linear-gradient(90deg, transparent, rgba(37,99,235,0.2), transparent);
-
-  --shadow-card:    0 4px 24px rgba(0, 0, 0, 0.08);
-  --shadow-glow:    0 0 40px rgba(37, 99, 235, 0.08);
 }
 
 /* ============================================================
    3. TYPOGRAPHY SYSTEM
    ============================================================ */
-
-
 h1, h2, h3, h4, h5, h6,
 .font-display {
   letter-spacing: -0.02em;
 }
 
-
-
 /* ============================================================
    4. REUSABLE SECTION STYLES
    ============================================================ */
 
-/* Each section gets a distinct gradient level */
-.section-s1 { background: var(--gradient-s1); }
-.section-s2 { background: var(--gradient-s2); }
-.section-s3 { background: var(--gradient-s3); }
-.section-s4 { background: var(--gradient-s4); }
-.section-s5 { background: var(--gradient-s5); }
-.section-s6 { background: var(--gradient-s6); }
+/* Classe principale pour toutes tes sections (recommandée) */
+.section {
+  background: var(--bg-section);
+  width: 100%;
+}
 
-/* Divider line between sections */
+/* Si tu veux garder les anciennes classes pour le moment */
+.section-s1,
+.section-s2,
+.section-s3,
+.section-s4,
+.section-s5,
+.section-s6 {
+  background: var(--bg-section);   /* toutes utilisent maintenant la même couleur */
+}
+
+/* Divider entre sections (optionnel) */
 .section-divider {
   height: 1px;
   background: var(--divider);
 }
 
-
+/* ============================================================
+   5. AUTRES STYLES (animations, blog, cta, etc.)
+   ============================================================ */
 
 @keyframes spin-cube {
-  0% {
-    transform: rotateX(0deg) rotateY(0deg);
-  }
-  100% {
-    transform: rotateX(360deg) rotateY(360deg);
-  }
+  0% { transform: rotateX(0deg) rotateY(0deg); }
+  100% { transform: rotateX(360deg) rotateY(360deg); }
 }
 
 .animate-spin-cube {
@@ -157,8 +177,7 @@ h1, h2, h3, h4, h5, h6,
   perspective: 1000px;
 }
 
-
-/* ── Blog card image zoom ── */
+/* Blog card */
 .blog-img-wrap {
   overflow: hidden;
   border-radius: 0.75rem;
@@ -170,21 +189,16 @@ h1, h2, h3, h4, h5, h6,
   transform: scale(1.08);
 }
 
-/* ── CTA section ── */
+/* CTA */
 .cta-blob {
   background: linear-gradient(135deg, rgba(59,130,246,0.18) 0%, transparent 60%);
   border-radius: 2.5rem;
   border: 1px solid var(--border-card);
 }
 
-
 @keyframes blink {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }
 
 .cursor {
