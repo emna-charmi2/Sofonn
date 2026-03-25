@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-
+import '@/app/globals.css';
+import Image from 'next/image';
+import offersinspo from '../features/marine-eco/offersinspo';
 export const metadata: Metadata = {
   title: 'Marine ECO | Sustainable Maritime Intelligence',
   description: 'AI-Driven Decarbonization for Maritime Operations',
@@ -7,6 +9,7 @@ export const metadata: Metadata = {
 
 export default function MarineEcoPage() {
   return (
+    <>
     <div className="relative flex min-h-screen w-full flex-col overflow-x-hidden bg-[#020617] text-slate-100">
 
       <style>{`
@@ -369,5 +372,7 @@ export default function MarineEcoPage() {
 
 
     </div>
+        <offersinspo/>
+    </>
   );
 }

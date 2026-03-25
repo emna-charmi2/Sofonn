@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 
-/* ─────────────────────────── DATA ─────────────────────────── */
 const articles = [
   {
     id: 1, category: "Technology",
@@ -76,24 +75,18 @@ const topics = [
   { label: "Finance",      icon: "finance",   count: "5"   },
 ];
 
-const popularPosts = [
-  { title: "IMO Releases Guidance on Amendments to MARPOL Annex VI Fuel Data Reporting", ago: "1 year ago", likes: 0, comments: 0 },
-  { title: "Sulphur Emission Control Area (SECA) to be established in the Mediterranean Sea in 2025.", ago: "1 year ago", likes: 0, comments: 0 },
-  { title: "Guidance from IMO on Ballast Water Record-Keeping and Reporting for 2024", ago: "1 year ago", likes: 1, comments: 0 },
-];
-
 const tags = [
-  "Digitalization","maritime","MARPOL","Annex VI","IMO DCS",
-  "Sulphur Emission Control Area","NOx emissions","BWM Convention",
-  "Ballast Water Management","Environment","CII","EEXI",
+  "Digitalization", "maritime", "MARPOL", "Annex VI", "IMO DCS",
+  "Sulphur Emission Control Area", "NOx emissions", "BWM Convention",
+  "Ballast Water Management", "Environment", "CII", "EEXI",
 ];
 
 /* ─────────────────────── MATERIAL SYMBOL HELPER ─────────────────────── */
 function Ms({ children, filled = false, className = "" }: { children: string; filled?: boolean; className?: string }) {
   return (
     <span
-      className={`material-symbols-outlined select-none leading-none ${className}`}
-      style={{ fontVariationSettings: filled ? "'FILL' 1,'wght' 400,'GRAD' 0,'opsz' 24" : "'FILL' 0,'wght' 400,'GRAD' 0,'opsz' 24" }}
+      className={`material-symbols-outlined select-none ${className}`}
+      style={{ fontVariationSettings: filled ? "'FILL' 1" : "'FILL' 0" }}
     >
       {children}
     </span>
@@ -102,332 +95,240 @@ function Ms({ children, filled = false, className = "" }: { children: string; fi
 
 /* ─────────────────────────── PAGE ─────────────────────────── */
 export default function BlogPage() {
-  const [activeTopics,  setActiveTopics]  = useState<string[]>(["All Articles"]);
-  const [visibleCount,  setVisibleCount]  = useState(4);
+  const [activeTopics, setActiveTopics] = useState<string[]>(["All Articles"]);
+  const [visibleCount, setVisibleCount] = useState(6); // plus de cartes visibles au départ
   const [likedArticles, setLikedArticles] = useState<number[]>([]);
-  const [sidebarOpen,   setSidebarOpen]   = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleTopic = (label: string) => {
-    if (label === "All Articles") { setActiveTopics(["All Articles"]); }
-    else {
-      const without = activeTopics.filter((t) => t !== "All Articles");
-      if (without.includes(label)) {
-        const next = without.filter((t) => t !== label);
-        setActiveTopics(next.length ? next : ["All Articles"]);
-      } else { setActiveTopics([...without, label]); }
+    if (label === "All Articles") {
+      setActiveTopics(["All Articles"]);
+    } else {
+      let next = activeTopics.filter((t) => t !== "All Articles");
+      if (next.includes(label)) {
+        next = next.filter((t) => t !== label);
+      } else {
+        next = [...next, label];
+      }
+      setActiveTopics(next.length ? next : ["All Articles"]);
     }
-    setVisibleCount(4);
+    setVisibleCount(6);
   };
 
-  const clearFilters = () => { setActiveTopics(["All Articles"]); setVisibleCount(4); };
-  const toggleLike   = (id: number) =>
-    setLikedArticles((p) => p.includes(id) ? p.filter((i) => i !== id) : [...p, id]);
+  const clearFilters = () => {
+    setActiveTopics(["All Articles"]);
+    setVisibleCount(6);
+  };
 
-  const filtered = activeTopics.includes("All Articles") ? articles : articles.filter((a) => activeTopics.includes(a.category));
-  const visible  = filtered.slice(0, visibleCount);
-  const hasMore  = visibleCount < filtered.length;
+  const toggleLike = (id: number) => {
+    setLikedArticles((prev) =>
+      prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+    );
+  };
 
-  /* ── Shared sidebar content ── */
-  const SidebarInner = () => (
-    <div className="flex flex-col gap-6">
+  const filtered = activeTopics.includes("All Articles")
+    ? articles
+    : articles.filter((a) => activeTopics.includes(a.category));
 
-      {/* Quick Stats */}
-      <div className="bg-white/[0.03] border border-white/[0.07] rounded-2xl px-5 py-4 flex justify-between">
-        {[
-          { icon: "article", label: "Articles", value: "124" },
-          { icon: "groups",  label: "Readers",  value: "18k" },
-          { icon: "star",    label: "Rating",   value: "4.9" },
-        ].map((s) => (
-          <div key={s.label} className="text-center">
-            <Ms filled className="text-xl text-blue-500 block">{s.icon}</Ms>
-            <p className="text-lg font-extrabold text-slate-100 leading-none mt-0.5">{s.value}</p>
-            <p className="text-[10px] text-slate-500 uppercase tracking-wider mt-0.5">{s.label}</p>
-          </div>
-        ))}
-      </div>
-
-      {/* Filter by Topic */}
-      <div>
-        <div className="flex items-center justify-between mb-2.5">
-          <h3 className="text-[10px] font-extrabold tracking-[0.12em] uppercase text-slate-500 flex items-center gap-1.5">
-            <Ms className="text-sm text-slate-500">tune</Ms>Filter by Topic
-          </h3>
-          {!activeTopics.includes("All Articles") && (
-            <button onClick={clearFilters} className="text-[10px] text-blue-400 hover:text-blue-300 font-semibold flex items-center gap-0.5 transition-colors">
-              <Ms className="text-xs">close</Ms>Cancel
-            </button>
-          )}
-        </div>
-        <nav className="flex flex-col gap-0.5">
-          {topics.map((t) => {
-            const isActive = activeTopics.includes(t.label);
-            return (
-              <button
-                key={t.label}
-                onClick={() => { toggleTopic(t.label); setSidebarOpen(false); }}
-                className={[
-                  "flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm border transition-all text-left w-full",
-                  isActive
-                    ? "bg-blue-500/10 border-blue-500/25 text-blue-400 font-bold"
-                    : "bg-transparent border-transparent text-slate-500 hover:bg-white/[0.03] hover:text-slate-400",
-                ].join(" ")}
-              >
-                <Ms filled={isActive} className={`text-lg ${isActive ? "text-blue-400" : "text-slate-500"}`}>{t.icon}</Ms>
-                <span>{t.label}</span>
-                <span className={`ml-auto text-[10px] font-bold px-2 py-0.5 rounded-full ${isActive ? "bg-blue-600 text-white" : "bg-white/[0.05] text-slate-500"}`}>
-                  {t.count}
-                </span>
-              </button>
-            );
-          })}
-        </nav>
-      </div>
-
-      {/* Popular Posts */}
-      <div>
-        <h3 className="text-[10px] font-extrabold tracking-[0.12em] uppercase text-slate-500 flex items-center gap-1.5 mb-3">
-          <Ms filled className="text-sm text-blue-500">trending_up</Ms>Popular Posts
-        </h3>
-        <div className="flex flex-col gap-2">
-          {popularPosts.map((post, i) => (
-            <button key={i} className="group flex flex-col gap-1 p-3 rounded-xl border border-transparent hover:border-white/[0.07] hover:bg-white/[0.02] transition-all text-left">
-              <p className="text-xs font-semibold text-slate-300 group-hover:text-blue-400 transition-colors leading-snug line-clamp-2">{post.title}</p>
-              <div className="flex items-center gap-3 mt-1">
-                <span className="text-[10px] text-slate-600">{post.ago}</span>
-                <span className="flex items-center gap-1 text-[10px] text-slate-600"><Ms className="text-xs">favorite</Ms>{post.likes}</span>
-                <span className="flex items-center gap-1 text-[10px] text-slate-600"><Ms className="text-xs">chat_bubble_outline</Ms>{post.comments}</span>
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Tags */}
-      <div>
-        <h3 className="text-[10px] font-extrabold tracking-[0.12em] uppercase text-slate-500 flex items-center gap-1.5 mb-3">
-          <Ms className="text-sm text-slate-500">sell</Ms>Tags
-        </h3>
-        <div className="flex flex-wrap gap-1.5">
-          {tags.map((tag) => (
-            <button key={tag} className="text-[10px] font-semibold px-2.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.07] text-slate-500 hover:bg-blue-500/10 hover:border-blue-500/25 hover:text-blue-400 transition-all">
-              #{tag}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Newsletter */}
-      <div className="bg-white/[0.03] border border-white/[0.07] rounded-2xl p-5">
-        <div className="flex items-center gap-2 mb-2">
-          <Ms filled className="text-xl text-blue-500">mail</Ms>
-          <h4 className="font-bold text-sm text-slate-100">Newsletter</h4>
-        </div>
-        <p className="text-xs text-slate-500 mb-4 leading-relaxed">Weekly maritime intelligence delivered to your inbox.</p>
-        <div className="flex flex-col gap-2">
-          {[
-            { icon: "person",          placeholder: "Full name",     type: "text"  },
-            { icon: "alternate_email", placeholder: "Email address", type: "email" },
-          ].map((f) => (
-            <div key={f.icon} className="relative">
-              <Ms className="absolute left-2.5 top-1/2 -translate-y-1/2 text-sm text-slate-500">{f.icon}</Ms>
-              <input
-                type={f.type}
-                placeholder={f.placeholder}
-                className="w-full text-xs rounded-lg bg-white/[0.04] border border-white/[0.07] pl-8 pr-3 py-2.5 text-slate-200 outline-none placeholder:text-slate-600 focus:border-blue-500/40 transition-colors"
-              />
-            </div>
-          ))}
-          <button className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white py-2.5 rounded-lg text-xs font-bold flex items-center justify-center gap-1.5 tracking-wide transition-all">
-            <Ms className="text-base">send</Ms>Subscribe
-          </button>
-        </div>
-      </div>
-    </div>
-  );
+  const visibleArticles = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
 
   return (
     <>
+    <br /><br /><br />
       <style dangerouslySetInnerHTML={{ __html: `
         @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap');
-        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
-        body{font-family:"DM Sans",sans-serif;background:#07090f;color:#e2e8f0}
-        h1,h2,h3,h4,h5{font-family:"Syne",sans-serif}
-        .material-symbols-outlined{font-family:"Material Symbols Outlined";font-weight:normal;font-style:normal;line-height:1;display:inline-block;white-space:nowrap;-webkit-font-smoothing:antialiased}
-        ::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:#07090f}::-webkit-scrollbar-thumb{background:#1e293b;border-radius:3px}
+        @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+        body { font-family: 'Inter', system-ui, sans-serif; background: #07090f; color: #e2e8f0; }
+        h1, h2, h3 { font-family: 'Syne', sans-serif; }
+        .material-symbols-outlined { font-family: "Material Symbols Outlined"; }
       ` }} />
 
-      {/* ── Mobile drawer backdrop ── */}
+      {/* Mobile backdrop */}
       {sidebarOpen && (
-        <div className="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div 
+          className="fixed inset-0 z-40 bg-black/70 backdrop-blur-sm lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
       )}
 
-      {/* ── Mobile sidebar drawer ── */}
-      <aside className={[
-        "fixed top-0 left-0 h-full w-72 z-40 bg-[#0b0f1a] border-r border-white/[0.07] overflow-y-auto p-5 transition-transform duration-300 lg:hidden",
-        sidebarOpen ? "translate-x-0" : "-translate-x-full",
-      ].join(" ")}>
-        <div className="flex items-center justify-between mb-5">
-          <span className="text-sm font-bold text-slate-200">Filters & Info</span>
-          <button onClick={() => setSidebarOpen(false)} className="text-slate-400 hover:text-white transition-colors">
-            <Ms className="text-xl">close</Ms>
+      {/* Mobile sidebar drawer */}
+      <aside className={`fixed top-0 left-0 h-full w-80 z-50 bg-[#0b0f1a] border-r border-white/10 overflow-y-auto p-6 transition-transform duration-300 lg:hidden ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+        <div className="flex justify-between items-center mb-8">
+          <h2 className="text-lg font-semibold text-white">Filtres & Infos</h2>
+          <button onClick={() => setSidebarOpen(false)} className="text-slate-400 hover:text-white">
+            <Ms className="text-2xl">close</Ms>
           </button>
         </div>
-        <SidebarInner />
+        <SidebarContent 
+          activeTopics={activeTopics} 
+          toggleTopic={toggleTopic} 
+          clearFilters={clearFilters} 
+          topics={topics} 
+          tags={tags}
+        />
       </aside>
 
-      <section className="min-h-screen bg-[#07090f] pt-20 pb-24 px-4 sm:px-6">
+      <section className="min-h-screen bg-[#07090f] pt-16 pb-20 px-4 sm:px-6 lg:pt-20">
         <div className="max-w-7xl mx-auto">
 
-          {/* ── Mobile top bar ── */}
-          <div className="flex items-center justify-between mb-6 lg:hidden ">
+          {/* Mobile header */}
+          <div className="lg:hidden flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-xl font-extrabold text-slate-100">Latest Insights</h2>
-              <p className="text-[11px] text-slate-500 mt-0.5 flex items-center gap-1 flex-wrap">
-                <Ms className="text-xs">update</Ms>
-                Last updated November 2024
-                <span className="ml-1 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold">
+              <h1 className="text-2xl font-bold text-white">Latest Insights</h1>
+              <p className="text-sm text-slate-500 mt-1 flex items-center gap-2">
+                Last updated • November 2024
+                <span className="px-2.5 py-0.5 bg-blue-500/10 text-blue-400 text-xs font-medium rounded-full border border-blue-500/20">
                   {filtered.length} articles
                 </span>
               </p>
             </div>
-            {/* Mobile filter button */}
             <button
               onClick={() => setSidebarOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-2 rounded-xl bg-white/[0.05] border border-white/[0.09] text-slate-300 text-xs font-semibold hover:bg-white/[0.09] transition-all shrink-0"
+              className="flex items-center gap-2 px-4 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 rounded-2xl text-sm font-medium transition-all"
             >
-              <Ms className="text-base">tune</Ms>
+              <Ms className="text-xl">tune</Ms>
               Filters
               {!activeTopics.includes("All Articles") && (
-                <span className="ml-1 w-4 h-4 rounded-full bg-blue-600 text-white text-[9px] font-bold flex items-center justify-center">
+                <span className="ml-1 bg-blue-600 text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full">
                   {activeTopics.length}
                 </span>
               )}
             </button>
           </div>
 
-          {/* ── Desktop + tablet layout ── */}
-          <div className="flex gap-8 items-start">
-
+          <div className="flex gap-10">
             {/* Desktop sidebar */}
-            <aside className="hidden lg:block w-60 xl:w-64 shrink-0 sticky top-6">
-              <SidebarInner />
+            <aside className="hidden lg:block w-72 xl:w-80 shrink-0 sticky top-8 self-start">
+              <SidebarContent 
+                activeTopics={activeTopics} 
+                toggleTopic={toggleTopic} 
+                clearFilters={clearFilters} 
+                topics={topics} 
+                tags={tags}
+              />
             </aside>
 
             {/* Main content */}
-            <div className="flex-1 min-w-0">
-
+            <main className="flex-1">
               {/* Desktop header */}
-              <div className="hidden lg:flex items-center justify-between mb-7">
+              <div className="hidden lg:flex items-center justify-between mb-10">
                 <div>
-                  <h2 className="text-2xl font-extrabold text-slate-100">Latest Insights</h2>
-                  <p className="text-xs text-slate-500 mt-1 flex items-center gap-1">
-                    <Ms className="text-sm">update</Ms>
+                  <h1 className="text-3xl font-bold text-white tracking-tight">Latest Insights</h1>
+                  <p className="text-slate-500 mt-1 flex items-center gap-2 text-sm">
+                    <Ms className="text-base">update</Ms>
                     Last updated November 2024
-                    <span className="ml-3 px-2 py-0.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[10px] font-bold">
-                      {filtered.length} articles
-                    </span>
                   </p>
                 </div>
-                <div className="flex items-center gap-2.5">
-                  <span className="text-xs text-slate-500">Sort:</span>
-                  <div className="relative">
-                    <select className="bg-white/[0.04] border border-white/[0.08] text-slate-200 py-2 pl-3 pr-8 rounded-lg text-xs font-semibold appearance-none outline-none cursor-pointer">
-                      <option>Newest First</option><option>Most Popular</option><option>Most Discussed</option>
-                    </select>
-                    <Ms className="absolute right-2 top-1/2 -translate-y-1/2 text-base text-slate-500 pointer-events-none">expand_more</Ms>
-                  </div>
+                <div className="text-sm text-slate-500">
+                  {filtered.length} articles
                 </div>
               </div>
 
-              {/* Mobile sort */}
-              <div className="flex items-center gap-2 mb-4 lg:hidden">
-                <span className="text-xs text-slate-500">Sort:</span>
-                <div className="relative">
-                  <select className="bg-white/[0.04] border border-white/[0.08] text-slate-200 py-2 pl-3 pr-8 rounded-lg text-xs font-semibold appearance-none outline-none cursor-pointer">
-                    <option>Newest First</option><option>Most Popular</option><option>Most Discussed</option>
-                  </select>
-                  <Ms className="absolute right-2 top-1/2 -translate-y-1/2 text-base text-slate-500 pointer-events-none">expand_more</Ms>
-                </div>
-              </div>
-
-              {/* Active filter chips */}
+              {/* Active filters */}
               {!activeTopics.includes("All Articles") && (
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {activeTopics.map((t) => (
-                    <span key={t} className="flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/25 text-blue-400 text-xs font-semibold">
-                      {t}
-                      <button onClick={() => toggleTopic(t)} className="hover:text-blue-200 transition-colors">
-                        <Ms className="text-xs">close</Ms>
+                <div className="flex flex-wrap gap-2 mb-8">
+                  {activeTopics.map((topic) => (
+                    <div
+                      key={topic}
+                      className="flex items-center gap-2 pl-4 pr-3 py-1.5 bg-blue-500/10 border border-blue-500/30 text-blue-400 rounded-full text-sm font-medium"
+                    >
+                      {topic}
+                      <button
+                        onClick={() => toggleTopic(topic)}
+                        className="hover:text-blue-300 transition-colors"
+                        aria-label={`Remove filter ${topic}`}
+                      >
+                        <Ms className="text-lg">close</Ms>
                       </button>
-                    </span>
+                    </div>
                   ))}
-                  <button onClick={clearFilters} className="text-xs text-slate-500 hover:text-slate-300 transition-colors self-center">Clear all</button>
+                  <button
+                    onClick={clearFilters}
+                    className="text-sm text-slate-400 hover:text-slate-300 ml-2 transition-colors"
+                  >
+                    Clear all
+                  </button>
                 </div>
               )}
 
-              {/* Empty state */}
-              {visible.length === 0 ? (
-                <div className="flex flex-col items-center justify-center py-24 text-slate-600">
-                  <Ms filled className="text-5xl mb-4">article</Ms>
-                  <p className="text-sm font-semibold">No articles found for this filter.</p>
-                  <button onClick={clearFilters} className="mt-4 text-xs text-blue-400 hover:underline">Clear filters</button>
+              {/* Articles grid */}
+              {visibleArticles.length === 0 ? (
+                <div className="py-20 text-center text-slate-500">
+                  <Ms className="text-6xl mb-4 opacity-50">article</Ms>
+                  <p className="text-lg font-medium">Aucun article ne correspond à ces filtres.</p>
+                  <button onClick={clearFilters} className="mt-6 text-blue-400 hover:underline">
+                    Réinitialiser les filtres
+                  </button>
                 </div>
               ) : (
-                /* Article grid: 1 col on mobile, 2 col on sm+ */
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
-                  {visible.map((article) => {
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {visibleArticles.map((article) => {
                     const isLiked = likedArticles.includes(article.id);
-                    return (
-                      <article key={article.id} className="bg-white/[0.03] border border-white/[0.07] rounded-2xl overflow-hidden flex flex-col transition-all duration-300 hover:-translate-y-1.5 hover:shadow-2xl hover:border-blue-500/25 group">
+                    const currentLikes = article.likes + (isLiked ? 1 : 0);
 
-                        {/* Image */}
-                        <div className="h-44 sm:h-48 relative overflow-hidden">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={article.img} alt={article.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-[#07090f]/70 to-transparent" />
-                          <span className="absolute top-3 left-3 bg-[#07090f]/75 backdrop-blur-lg border border-white/10 text-slate-200 text-[10px] font-bold tracking-wider uppercase px-2.5 py-1 rounded-full flex items-center gap-1">
-                            <Ms filled className="text-xs">{article.icon}</Ms>{article.category}
-                          </span>
+                    return (
+                      <article
+                        key={article.id}
+                        className="group bg-[#0f131f] border border-white/10 rounded-3xl overflow-hidden flex flex-col hover:border-blue-500/30 transition-all duration-300 hover:-translate-y-1"
+                      >
+                        <div className="relative h-56 overflow-hidden">
+                          <img
+                            src={article.img}
+                            alt={article.title}
+                            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
+                          
+                          <div className="absolute top-4 left-4 px-3 py-1 bg-black/70 backdrop-blur-md border border-white/10 rounded-full text-xs font-medium flex items-center gap-1.5 text-white">
+                            <Ms filled className="text-sm">{article.icon}</Ms>
+                            {article.category}
+                          </div>
                         </div>
 
-                        {/* Body */}
-                        <div className="p-4 sm:p-5 flex flex-col flex-1">
-                          {/* Stats */}
-                          <div className="flex items-center gap-3 mb-3">
+                        <div className="p-6 flex flex-col flex-1">
+                          <div className="flex items-center gap-4 text-xs text-slate-500 mb-4">
                             <button
                               onClick={() => toggleLike(article.id)}
-                              className={`flex items-center gap-1 text-xs font-semibold transition-colors ${isLiked ? "text-red-400" : "text-slate-500 hover:text-red-400"}`}
+                              className={`flex items-center gap-1 transition-colors ${isLiked ? "text-red-400" : "hover:text-red-400"}`}
                             >
-                              <Ms filled={isLiked} className="text-sm">favorite</Ms>
-                              {article.likes + (isLiked ? 1 : 0)}
+                              <Ms filled={isLiked} className="text-base">favorite</Ms>
+                              {currentLikes}
                             </button>
-                            <span className="flex items-center gap-1 text-xs text-slate-500">
-                              <Ms className="text-sm">chat_bubble_outline</Ms>{article.comments}
-                            </span>
-                            <span className="flex items-center gap-1 text-xs text-slate-500">
-                              <Ms className="text-sm">visibility</Ms>{article.views}
-                            </span>
+                            <div className="flex items-center gap-1">
+                              <Ms className="text-base">chat_bubble_outline</Ms>
+                              {article.comments}
+                            </div>
+                            <div className="flex items-center gap-1">
+                              <Ms className="text-base">visibility</Ms>
+                              {article.views}
+                            </div>
                           </div>
 
-                          <h3 className="text-sm sm:text-base font-bold leading-snug text-slate-100 mb-2 group-hover:text-blue-400 transition-colors line-clamp-2">
+                          <h3 className="font-semibold text-lg leading-tight text-white group-hover:text-blue-400 transition-colors line-clamp-3">
                             {article.title}
                           </h3>
-                          <p className="text-xs text-slate-500 leading-relaxed flex-1 mb-4 line-clamp-3">
+
+                          <p className="mt-3 text-sm text-slate-400 line-clamp-3 flex-1">
                             {article.excerpt}
                           </p>
 
-                          {/* Footer */}
-                          <div className="flex items-center justify-between gap-2">
-                            <div className="flex items-center gap-2 min-w-0">
-                              {/* eslint-disable-next-line @next/next/no-img-element */}
-                              <img src={article.authorImg} alt={article.author} className="w-7 h-7 rounded-full object-cover border border-white/10 shrink-0" />
-                              <div className="min-w-0">
-                                <p className="text-xs font-semibold text-slate-300 leading-none truncate">{article.author}</p>
-                                <p className="text-[10px] text-slate-500 mt-0.5">{article.date}</p>
+                          <div className="mt-6 pt-6 border-t border-white/10 flex items-center justify-between">
+                            <div className="flex items-center gap-3">
+                              <img
+                                src={article.authorImg}
+                                alt={article.author}
+                                className="w-8 h-8 rounded-full ring-1 ring-white/10"
+                              />
+                              <div className="text-sm">
+                                <div className="font-medium text-white truncate">{article.author}</div>
+                                <div className="text-xs text-slate-500">{article.date}</div>
                               </div>
                             </div>
-                            <button className="flex items-center gap-1 px-3 py-1.5 rounded-lg bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold hover:bg-blue-500/20 transition-all shrink-0">
-                              Read <Ms className="text-sm">arrow_forward</Ms>
+
+                            <button className="flex items-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-blue-500/10 border border-white/10 hover:border-blue-500/30 rounded-2xl text-sm font-medium text-blue-400 transition-all">
+                              Read full
+                              <Ms className="text-lg">arrow_forward</Ms>
                             </button>
                           </div>
                         </div>
@@ -437,31 +338,108 @@ export default function BlogPage() {
                 </div>
               )}
 
-              {/* Show More */}
+              {/* Load more */}
               {hasMore && (
-                <div className="flex justify-center mt-8 sm:mt-10">
+                <div className="flex justify-center mt-12">
                   <button
-                    onClick={() => setVisibleCount((v) => v + 4)}
-                    className="flex items-center gap-2 px-6 py-3 rounded-xl bg-white/[0.04] border border-white/[0.08] text-slate-300 text-sm font-semibold hover:bg-white/[0.07] hover:border-white/[0.15] transition-all"
+                    onClick={() => setVisibleCount((v) => v + 6)}
+                    className="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-2xl flex items-center gap-3 text-sm font-medium transition-all"
                   >
-                    <Ms className="text-base">expand_more</Ms>
-                    Show more
-                    <span className="ml-1 text-xs text-slate-500">({filtered.length - visibleCount} remaining)</span>
+                    <Ms className="text-2xl">expand_more</Ms>
+                    Load more articles
                   </button>
                 </div>
               )}
 
-              {/* End of results */}
-              {!hasMore && visible.length > 0 && (
-                <p className="text-center text-xs text-slate-600 mt-8 flex items-center justify-center gap-2">
-                  <Ms className="text-sm">done_all</Ms>
-                  You&apos;ve seen all {filtered.length} articles
-                </p>
-              )}
-            </div>
+            </main>
           </div>
         </div>
       </section>
     </>
+  );
+}
+
+/* Sidebar reusable component */
+function SidebarContent({
+  activeTopics,
+  toggleTopic,
+  clearFilters,
+  topics,
+  tags,
+}: {
+  activeTopics: string[];
+  toggleTopic: (label: string) => void;
+  clearFilters: () => void;
+  topics: any[];
+  tags: string[];
+}) {
+  return (
+    <div className="space-y-10">
+      {/* Quick stats */}
+      <div className="grid grid-cols-3 gap-4 bg-white/[0.025] border border-white/10 rounded-3xl p-5">
+        {[
+          { icon: "article", label: "Articles", value: "124" },
+          { icon: "groups", label: "Readers", value: "18k" },
+          { icon: "star", label: "Rating", value: "4.9" },
+        ].map((s) => (
+          <div key={s.label} className="text-center">
+            <Ms filled className="text-3xl text-blue-500 block mb-1">{s.icon}</Ms>
+            <p className="font-bold text-xl text-white">{s.value}</p>
+            <p className="text-[10px] uppercase tracking-widest text-slate-500 mt-0.5">{s.label}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Topics */}
+      <div>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="uppercase text-xs font-semibold tracking-widest text-slate-500">Topics</h3>
+          {!activeTopics.includes("All Articles") && (
+            <button onClick={clearFilters} className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1">
+              <Ms className="text-sm">close</Ms> Clear
+            </button>
+          )}
+        </div>
+
+        <div className="space-y-1">
+          {topics.map((t) => {
+            const isActive = activeTopics.includes(t.label);
+            return (
+              <button
+                key={t.label}
+                onClick={() => toggleTopic(t.label)}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-left transition-all border ${isActive
+                  ? "bg-blue-500/10 border-blue-500/30 text-blue-400"
+                  : "border-transparent hover:bg-white/5 text-slate-400 hover:text-slate-200"
+                }`}
+              >
+                <Ms filled={isActive} className={`text-xl ${isActive ? "text-blue-400" : ""}`}>
+                  {t.icon}
+                </Ms>
+                <span className="font-medium">{t.label}</span>
+                <span className={`ml-auto text-xs font-mono px-2.5 py-0.5 rounded-full ${isActive ? "bg-blue-600 text-white" : "bg-white/10 text-slate-500"}`}>
+                  {t.count}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Tags cloud */}
+      <div>
+        <h3 className="uppercase text-xs font-semibold tracking-widest text-slate-500 mb-4">Popular tags</h3>
+        <div className="flex flex-wrap gap-2">
+          {tags.map((tag) => (
+            <span
+              key={tag}
+              className="text-xs px-4 py-2 bg-white/5 hover:bg-blue-500/10 border border-white/10 hover:border-blue-500/30 rounded-2xl text-slate-400 hover:text-blue-400 transition-all cursor-pointer"
+            >
+              #{tag}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
