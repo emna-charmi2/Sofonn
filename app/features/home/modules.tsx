@@ -1,5 +1,6 @@
-'use client';
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+'use client'
+
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 const MODULES = [
   {
@@ -34,337 +35,279 @@ const MODULES = [
     href: '/blog',
     accent: '#e1294c',
   },
-];
+]
 
-const CUBE_SIZE = 360;
-const HALF = CUBE_SIZE / 2;
+const BASE_CUBE_SIZE = 400
+const getCubeSize = (width: number) => {
+  if (width >= 1280) return BASE_CUBE_SIZE       // ≥1280px : 400px
+  if (width >= 768) return BASE_CUBE_SIZE * 0.9   // entre 768 et 1279 : 360px
+  return 0 // masqué en dessous de 768px
+}
 
-const getFaceTransform = (index: number) =>
-  `rotateX(${index * 90}deg) translateZ(${HALF}px)`;
+export default function HomeCube() {
+  const [currentIndex, setCurrentIndex] = useState(0)
+  const [scrollProgress, setScrollProgress] = useState(0)
+  const [textVisible, setTextVisible] = useState(true)
+  const [cubeSize, setCubeSize] = useState(BASE_CUBE_SIZE)
+  const [isCubeVisible, setIsCubeVisible] = useState(true)
 
-export default function Solutions() {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [cubeRotX, setCubeRotX] = useState(0);
-  const [textVisible, setTextVisible] = useState(true);
+  const sectionRef = useRef<HTMLDivElement>(null)
 
-  const isTransitioningRef = useRef(false);
-  const scrollTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const wheelTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const accumulatedDeltaRef = useRef(0);
-  const sectionRef = useRef<HTMLElement | null>(null);
+  // Gestion responsive : taille du cube + visibilité
+  useEffect(() => {
+    const updateLayout = () => {
+      const width = window.innerWidth
+      const newSize = getCubeSize(width)
+      setCubeSize(newSize)
+      setIsCubeVisible(newSize > 0)
+    }
+    updateLayout()
+    window.addEventListener('resize', updateLayout)
+    return () => window.removeEventListener('resize', updateLayout)
+  }, [])
 
-  const navigateToModule = useCallback((index: number, isScrolling = false) => {
-    if (isTransitioningRef.current || index === currentIndex) return;
+  const half = cubeSize / 2
 
-    if (scrollTimeoutRef.current) {
-      clearTimeout(scrollTimeoutRef.current);
+  // Rotation basée sur le scroll (inchangée)
+  useEffect(() => {
+    const handleScroll = () => {
+      const section = sectionRef.current
+      if (!section) return
+
+      const rect = section.getBoundingClientRect()
+      const sectionHeight = section.offsetHeight
+      const viewportHeight = window.innerHeight
+
+      const start = window.scrollY + rect.top
+      const relativeScroll = window.scrollY - start
+      const maxScroll = sectionHeight - viewportHeight
+
+      if (relativeScroll >= 0 && relativeScroll <= maxScroll) {
+        const progress = relativeScroll / maxScroll
+        setScrollProgress(progress)
+
+        const numModules = MODULES.length
+        const newIndex = Math.min(
+          Math.floor(progress * numModules),
+          numModules - 1
+        )
+        if (newIndex !== currentIndex) {
+          setCurrentIndex(newIndex)
+          setTextVisible(false)
+          setTimeout(() => setTextVisible(true), 250)
+        }
+      }
     }
 
-    isTransitioningRef.current = true;
-    setTextVisible(false);
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [currentIndex])
 
-    scrollTimeoutRef.current = setTimeout(() => {
-      setCurrentIndex(index);
-      setCubeRotX(index * 90);
+  const cubeRotX = -scrollProgress * (MODULES.length - 1) * 90
 
-      setTimeout(() => {
-        setTextVisible(true);
-        isTransitioningRef.current = false;
-      }, 250);
-    }, isScrolling ? 100 : 180);
-  }, [currentIndex]);
+  const navigateToModule = useCallback(
+    (index: number) => {
+      const section = sectionRef.current
+      if (!section) return
 
+      const rect = section.getBoundingClientRect()
+      const sectionTop = window.scrollY + rect.top
+      const sectionHeight = section.offsetHeight
+      const viewportHeight = window.innerHeight
+      const maxScroll = sectionHeight - viewportHeight
+      const targetProgress = index / (MODULES.length - 1)
+      const targetScroll = sectionTop + targetProgress * maxScroll
+      window.scrollTo({ top: targetScroll, behavior: 'smooth' })
+    },
+    []
+  )
+
+  const mod = MODULES[currentIndex]
+
+  // Préchargement des images (inchangé)
   useEffect(() => {
-    const section = sectionRef.current;
-    if (!section) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      const rect = section.getBoundingClientRect();
-      const isInViewport =
-        rect.top <= window.innerHeight / 2 &&
-        rect.bottom >= window.innerHeight / 2;
-
-      if (!isInViewport) return;
-
-      const direction = e.deltaY > 0 ? 1 : -1;
-
-      // 🔽 Autoriser le scroll de la page si on est à une extrémité et qu'on veut sortir
-      if (
-        (currentIndex === 0 && direction < 0) ||
-        (currentIndex === MODULES.length - 1 && direction > 0)
-      ) {
-        return; // On laisse la page défiler normalement
-      }
-
-      e.preventDefault(); // Sinon, on bloque le scroll pour naviguer dans les modules
-
-      accumulatedDeltaRef.current += e.deltaY;
-      const threshold = 80;
-
-      if (wheelTimeoutRef.current) {
-        clearTimeout(wheelTimeoutRef.current);
-      }
-
-      if (Math.abs(accumulatedDeltaRef.current) >= threshold) {
-        const newIndex = Math.min(
-          Math.max(currentIndex + direction, 0),
-          MODULES.length - 1
-        );
-
-        if (newIndex !== currentIndex) {
-          navigateToModule(newIndex, true);
-          if (navigator.vibrate) navigator.vibrate(50);
-        }
-
-        accumulatedDeltaRef.current = 0;
-      }
-
-      wheelTimeoutRef.current = setTimeout(() => {
-        accumulatedDeltaRef.current = 0;
-      }, 150);
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      const rect = section.getBoundingClientRect();
-      const isInViewport =
-        rect.top <= window.innerHeight / 2 &&
-        rect.bottom >= window.innerHeight / 2;
-
-      if (!isInViewport) return;
-
-      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
-        // Autoriser la navigation page si on est à une extrémité
-        if (
-          (e.key === 'ArrowUp' && currentIndex === 0) ||
-          (e.key === 'ArrowDown' && currentIndex === MODULES.length - 1)
-        ) {
-          return;
-        }
-
-        e.preventDefault();
-
-        const direction = e.key === 'ArrowDown' ? 1 : -1;
-        const newIndex = Math.min(
-          Math.max(currentIndex + direction, 0),
-          MODULES.length - 1
-        );
-
-        if (newIndex !== currentIndex) {
-          navigateToModule(newIndex, true);
-          if (navigator.vibrate) navigator.vibrate(50);
-        }
-      }
-    };
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            window.addEventListener('wheel', handleWheel, { passive: false });
-            window.addEventListener('keydown', handleKeyDown);
-          } else {
-            window.removeEventListener('wheel', handleWheel);
-            window.removeEventListener('keydown', handleKeyDown);
-          }
-        });
-      },
-      { threshold: 0.3 }
-    );
-
-    observer.observe(section);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('keydown', handleKeyDown);
-      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
-      if (wheelTimeoutRef.current) clearTimeout(wheelTimeoutRef.current);
-    };
-  }, [currentIndex, navigateToModule]);
-
-  const mod = MODULES[currentIndex];
+    MODULES.forEach((module) => {
+      const img = new Image()
+      img.src = module.src
+    })
+  }, [])
 
   return (
-    <section
-      ref={sectionRef}
-      className="py-20 px-4 sm:px-8 bg-[#050c1a] relative overflow-hidden scroll-smooth"
-      style={{ scrollSnapAlign: 'start' }}
-    >
-      {/* Background glows */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            'radial-gradient(ellipse at top, rgba(59,130,246,0.10) 0%, transparent 60%)',
-        }}
-      />
-      <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
-        style={{ background: 'rgba(59,130,246,0.18)', filter: 'blur(120px)' }}
-      />
-      <div
-        className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{ background: 'rgba(37,99,235,0.10)', filter: 'blur(140px)' }}
-      />
+    <div className="relative">
+      <div className="h-[80vh] flex flex-col items-center justify-center text-center px-4 sm:px-6">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-125 h-125 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
+        <h1 className="text-4xl sm:text-5xl md:text-7xl font-black text-white mb-6 px-2">
+          What you can build with Sofonn Solutions
+        </h1>
+        <p className="max-w-xl text-base sm:text-lg leading-relaxed px-4 text-slate-400">
+          From streamlined logistics to efficient operations, we have everything
+          you need to elevate your business on the high seas.
+        </p>
+      </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold text-white mb-5 leading-tight tracking-tight">
-            What you can build with{' '}
-            <span className="bg-gradient-to-r from-blue-400 via-indigo-400 to-purple-400 bg-clip-text text-transparent">
-              Sofonn Solutions
-            </span>
-          </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed">
-            From streamlined logistics to efficient operations, we have everything
-            you need to elevate your business on the high seas.
-          </p>
+      <div
+        ref={sectionRef}
+        className="relative"
+        style={{ height: `${MODULES.length * 100}vh` }}
+      >
+        <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+          {/* Background glows (inchangés) */}
           <div
-            className="rounded-full mx-auto mt-6"
+            className="absolute inset-0 pointer-events-none"
             style={{
-              width: '4rem',
-              height: '3px',
-              background: 'linear-gradient(to right, #60a5fa, #3b82f6, #2563eb)',
+              background:
+                'radial-gradient(ellipse at top, rgba(59,130,246,0.10) 0%, transparent 60%)',
             }}
           />
-        </div>
+          <div
+            className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+            style={{ background: 'rgba(59,130,246,0.18)', filter: 'blur(120px)' }}
+          />
+          <div
+            className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full pointer-events-none"
+            style={{ background: 'rgba(37,99,235,0.10)', filter: 'blur(140px)' }}
+          />
 
-        {/* Carte principale */}
-        <div
-          className="rounded-2xl border p-8 md:p-12 transition-all duration-300 hover:border-blue-500/40 hover:shadow-xl hover:shadow-blue-500/10"
-          style={{
-            background: 'rgba(255,255,255,0.03)',
-            borderColor: 'rgba(255,255,255,0.07)',
-          }}
-        >
-          <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
-            {/* Texte */}
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 relative z-10 w-full">
             <div
-              className="flex-1 text-center lg:text-left order-2 lg:order-1 w-full"
+              className="rounded-2xl border p-8 md:p-12 transition-all duration-300 hover:border-blue-500/40 hover:shadow-xl hover:shadow-blue-500/10"
               style={{
-                opacity: textVisible ? 1 : 0,
-                transform: textVisible ? 'translateY(0)' : 'translateY(16px)',
-                transition: 'opacity 0.4s ease, transform 0.4s ease',
+                background: 'rgba(255,255,255,0.03)',
+                borderColor: 'rgba(255,255,255,0.07)',
               }}
             >
-              <span
-                className="inline-block text-xs font-semibold tracking-widest uppercase px-4 py-1.5 rounded-full border mb-4 transition-all duration-300"
-                style={{
-                  backgroundColor: `${mod.accent}22`,
-                  color: mod.accent,
-                  borderColor: `${mod.accent}66`,
-                  boxShadow: `0 0 20px ${mod.accent}33`,
-                }}
-              >
-                {mod.label}
-              </span>
-              <h3 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 leading-tight">
-                {mod.fullName}
-              </h3>
-              <p className="text-base text-slate-400 leading-relaxed max-w-md mx-auto lg:mx-0 mb-8">
-                {mod.desc}
-              </p>
-              <a
-                href={mod.href}
-                className="group inline-flex items-center gap-2 text-sm font-medium px-6 py-3 rounded-full transition-all duration-300 hover:scale-105"
-                style={{
-                  color: mod.accent,
-                  backgroundColor: `${mod.accent}11`,
-                  border: `1px solid ${mod.accent}33`,
-                }}
-              >
-                <span>Discover {mod.label}</span>
-                <svg
-                  className="w-4 h-4 transition-transform group-hover:translate-x-1"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2.5}
-                    d="M17 8l4 4m0 0l-4 4m4-4H3"
-                  />
-                </svg>
-              </a>
-
-              {/* Dots */}
-              <div className="flex gap-3 mt-10 justify-center lg:justify-start">
-                {MODULES.map((m, idx) => (
-                  <button
-                    key={idx}
-                    onClick={() => navigateToModule(idx)}
-                    aria-label={`Go to ${m.fullName}`}
-                    className="transition-all duration-500 hover:scale-110 cursor-pointer"
-                    style={{
-                      width: idx === currentIndex ? '32px' : '8px',
-                      height: '8px',
-                      borderRadius: '4px',
-                      backgroundColor:
-                        idx === currentIndex ? mod.accent : 'rgba(255,255,255,0.25)',
-                      boxShadow: idx === currentIndex ? `0 0 10px ${mod.accent}` : 'none',
-                    }}
-                  />
-                ))}
-              </div>
-            </div>
-
-            {/* Cube 3D */}
-            <div className="order-1 lg:order-2 flex-shrink-0 flex justify-center">
-              <div
-                style={{
-                  width: CUBE_SIZE,
-                  height: CUBE_SIZE,
-                  perspective: '900px',
-                }}
-              >
+              <div className="flex flex-col lg:flex-row items-center gap-10 lg:gap-16">
+                {/* Texte */}
                 <div
+                  className="flex-1 text-center lg:text-left order-2 lg:order-1 w-full"
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    position: 'relative',
-                    transformStyle: 'preserve-3d',
-                    transform: `rotateX(${cubeRotX}deg)`,
-                    transition: 'transform 0.55s cubic-bezier(0.32, 0.72, 0, 1)',
+                    opacity: textVisible ? 1 : 0,
+                    transform: textVisible ? 'translateY(0)' : 'translateY(16px)',
+                    transition: 'opacity 0.4s ease, transform 0.4s ease',
                   }}
                 >
-                  {MODULES.map((module, idx) => (
+                  <span
+                    className="inline-block tracking-widest uppercase px-4 py-1.5 rounded-full border mb-4 transition-all duration-300"
+                    style={{
+                      backgroundColor: `${mod.accent}22`,
+                      color: mod.accent,
+                      borderColor: `${mod.accent}66`,
+                      boxShadow: `0 0 20px ${mod.accent}33`,
+                    }}
+                  >
+                    {mod.label}
+                  </span>
+                  <div>
+                    <h3 className="mb-4">{mod.fullName}</h3>
+                  </div>
+                  <p className="max-w-md mx-auto lg:mx-0 mb-8">{mod.desc}</p>
+                  <a
+                    href={mod.href}
+                    className="group inline-flex items-center gap-2 px-6 py-3 rounded-full transition-all duration-300 hover:scale-105"
+                    style={{
+                      color: mod.accent,
+                      backgroundColor: `${mod.accent}11`,
+                      border: `1px solid ${mod.accent}33`,
+                    }}
+                  >
+                    <span>Discover {mod.label}</span>
+                    <svg
+                      className="w-4 h-4 transition-transform group-hover:translate-x-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2.5}
+                        d="M17 8l4 4m0 0l-4 4m4-4H3"
+                      />
+                    </svg>
+                  </a>
+
+                  <div className="flex gap-3 mt-10 justify-center lg:justify-start">
+                    {MODULES.map((m, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => navigateToModule(idx)}
+                        aria-label={`Go to ${m.fullName}`}
+                        className="transition-all duration-500 hover:scale-110 cursor-pointer"
+                        style={{
+                          width: idx === currentIndex ? '32px' : '8px',
+                          height: '8px',
+                          borderRadius: '4px',
+                          backgroundColor:
+                            idx === currentIndex ? mod.accent : 'rgba(255,255,255,0.25)',
+                          boxShadow: idx === currentIndex ? `0 0 10px ${mod.accent}` : 'none',
+                        }}
+                      />
+                    ))}
+                  </div>
+                </div>
+
+                {/* Cube 3D - affiché uniquement sur écrans suffisamment larges */}
+                {isCubeVisible && (
+                  <div className="order-1 lg:order-2 flex-shrink-0 flex justify-center">
                     <div
-                      key={idx}
                       style={{
-                        position: 'absolute',
-                        width: '100%',
-                        height: '100%',
-                        transform: getFaceTransform(idx),
-                        overflow: 'hidden',
-                        borderRadius: '16px',
-                        border: `2px solid ${
-                          idx === currentIndex
-                            ? module.accent
-                            : 'rgba(255,255,255,0.15)'
-                        }`,
-                        transition: 'border-color 0.3s ease',
-                        boxShadow:
-                          idx === currentIndex
-                            ? `0 0 30px ${module.accent}44`
-                            : 'none',
+                        width: cubeSize,
+                        height: cubeSize,
+                        perspective: '900px',
                       }}
                     >
-                      <img
-                        src={module.src}
-                        alt={module.fullName}
-                        className="w-full h-full object-cover"
-                      />
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          position: 'relative',
+                          transformStyle: 'preserve-3d',
+                          transform: `rotateX(${cubeRotX}deg)`,
+                          transition: 'transform 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1)',
+                          willChange: 'transform',
+                        }}
+                      >
+                        {MODULES.map((module, idx) => (
+                          <div
+                            key={idx}
+                            style={{
+                              position: 'absolute',
+                              width: '100%',
+                              height: '100%',
+                              transform: `rotateX(${idx * 90}deg) translateZ(${half}px)`,
+                              overflow: 'hidden',
+                              borderRadius: '16px',
+                              border: `2px solid ${
+                                idx === currentIndex
+                                  ? module.accent
+                                  : 'rgba(255,255,255,0.15)'
+                              }`,
+                              transition: 'border-color 0.3s ease',
+                              boxShadow:
+                                idx === currentIndex
+                                  ? `0 0 30px ${module.accent}44`
+                                  : 'none',
+                              backfaceVisibility: 'hidden',
+                            }}
+                          >
+                            <img
+                              src={module.src}
+                              alt={module.fullName}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
-  );
+    </div>
+  )
 }

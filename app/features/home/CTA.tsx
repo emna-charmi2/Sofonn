@@ -1,6 +1,10 @@
-import Image from "next/image";
+"use client";
 
-export default function Why() {
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
+export default function CallToAction() {
   const WHY_ITEMS = [
     {
       icon: "verified_user",
@@ -24,11 +28,19 @@ export default function Why() {
     },
   ];
 
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 120,
+      easing: "ease-out-cubic",
+    });
+  }, []);
+
   return (
     <>
-    
-      <section className="py-28 px-4 sm:px-8 bg-[#050c1a] relative overflow-hidden">
-        {/* Background glows */}
+      <section className="relative py-28 px-4 sm:px-8 overflow-hidden">
+
         <div
           className="absolute inset-0 pointer-events-none"
           style={{
@@ -37,10 +49,7 @@ export default function Why() {
           }}
         />
 
-        {/* ── 2. Dark overlay ── */}
-        <div className="absolute inset-0 bg-black/60" />
-
-        {/* ── 3. Subtle blue glows on top of overlay ── */}
+        {/* Subtle blue glows on top of overlay */}
         <div
           className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
           style={{ background: "rgba(59,130,246,0.15)", filter: "blur(130px)" }}
@@ -50,10 +59,9 @@ export default function Why() {
           style={{ background: "rgba(37,99,235,0.10)", filter: "blur(120px)" }}
         />
 
-        {/* ── 4. Content ── */}
+        {/* Content */}
         <div className="relative z-10 max-w-7xl mx-auto">
-
-          {/* ── CTA blob ── */}
+          {/* CTA blob */}
           <div className="max-w-5xl mx-auto">
             <div
               className="rounded-2xl md:rounded-3xl p-12 lg:p-20 text-center border shadow-2xl shadow-black/30"
@@ -63,16 +71,26 @@ export default function Why() {
                 background: "rgba(255,255,255,0.07)",
                 borderColor: "rgba(255,255,255,0.15)",
               }}
+              data-aos="fade-up"
+              data-aos-duration="800"
             >
-              <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-                Ready to optimize your fleet?
-              </h2>
-              <p className="text-base leading-relaxed max-w-2xl mx-auto mb-12 text-white/70">
-                Join the industry leaders already using our platform to drive the
-                future of maritime logistics. Transform your data into actionable
-                intelligence today.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <div>
+                <h2 className="mb-6" data-aos="fade-up" data-aos-delay="100">
+                  Ready to optimize your fleet?
+                </h2>
+                <div className="max-w-2xl mx-auto mb-12" data-aos="fade-up" data-aos-delay="200">
+                  <p>
+                    Join the industry leaders already using our platform to drive the
+                    future of maritime logistics. Transform your data into actionable
+                    intelligence today.
+                  </p>
+                </div>
+              </div>
+              <div
+                className="flex flex-col sm:flex-row gap-4 justify-center"
+                data-aos="fade-up"
+                data-aos-delay="300"
+              >
                 <button
                   className="flex items-center justify-center gap-2 px-8 py-4 rounded-xl font-semibold text-white text-base transition-all duration-300 hover:opacity-90 hover:scale-[1.03] active:scale-95"
                   style={{
@@ -110,7 +128,6 @@ export default function Why() {
               </div>
             </div>
           </div>
-
         </div>
       </section>
     </>

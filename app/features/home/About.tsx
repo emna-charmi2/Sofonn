@@ -91,7 +91,7 @@ const AnimatedStat = ({
 
   return (
     <div ref={elementRef} className="text-center">
-      <p
+      <div
         className={`font-extrabold ${large ? "text-4xl sm:text-5xl" : "text-3xl"}`}
         style={{
           background: "linear-gradient(90deg,#60a5fa,#818cf8)",
@@ -101,10 +101,10 @@ const AnimatedStat = ({
       >
         {displayValue}
         {suffix}
-      </p>
-      <p className={`text-slate-500 ${large ? "text-sm mt-2" : "text-xs uppercase tracking-wider mt-1"}`}>
-        {label}
-      </p>
+      </div>
+      {label ? (
+        <p className={large ? "mt-2" : "mt-1 uppercase tracking-wider"}>{label}</p>
+      ) : null}
     </div>
   );
 };
@@ -126,7 +126,7 @@ export default function AboutUs() {
       `}</style>
 
       {/* Section 1 : Meet Sofonn - métriques triangulaires */}
-      <section className="py-28 px-4 sm:px-8 bg-[#050c1a] relative overflow-hidden">
+      <section className="py-28 px-4 sm:px-8 relative overflow-hidden">
         {/* Background glows */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
@@ -135,19 +135,21 @@ export default function AboutUs() {
         <div className="w-[90%] max-w-6xl mx-auto relative z-10">
           {/* Titre accrocheur */}
           <div className="text-center mb-16">
-            <h2 className="text-[clamp(2rem,5vw,4rem)] font-extrabold text-white mb-4 tracking-tight">
-              Meet{" "}
-              <span
-                style={{
-                  background: "linear-gradient(90deg,#60a5fa,#3b82f6,#818cf8)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                }}
-              >
-                Sofonn
-              </span>
-            </h2>
-            <p className="text-slate-300 text-lg max-w-3xl mx-auto leading-relaxed">
+            <div className="text-white">
+              <h2 className="mb-4">
+                Meet{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(90deg,#60a5fa,#3b82f6,#818cf8)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                  }}
+                >
+                  Sofonn
+                </span>
+              </h2>
+            </div>
+            <p className="max-w-3xl mx-auto">
               The maritime intelligence platform that transforms complex operations into streamlined success.
               Reduce errors, save time, and gain complete visibility — from bridge to back office.
             </p>
@@ -168,7 +170,7 @@ export default function AboutUs() {
               <div className="mb-4 flex justify-center">
               </div>
               <AnimatedStat value="100%" label="" large />
-              <p className="text-sm text-slate-400 mt-2 leading-relaxed">
+              <p className="mt-2">
                 real-time visibility across deck operations
               </p>
             </div>
@@ -192,7 +194,7 @@ export default function AboutUs() {
                    
                   </div>
                   <AnimatedStat value={metric.value} label="" large />
-                  <p className="text-sm text-slate-400 mt-2 leading-relaxed">{metric.label}</p>
+                  <p className="mt-2">{metric.label}</p>
                 </div>
               ))}
             </div>

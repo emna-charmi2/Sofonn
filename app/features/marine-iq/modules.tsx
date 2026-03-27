@@ -19,7 +19,7 @@ export default function Modules() {
   ];
 
   return (
-    <section className="py-28 px-4 sm:px-8 bg-[#050c1a] relative overflow-hidden">
+    <section className="py-28 px-4 sm:px-8  relative overflow-hidden">
       {/* Background glows */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none" />
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
@@ -29,10 +29,10 @@ export default function Modules() {
 
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-[clamp(2.4rem,5vw,3.8rem)] font-extrabold text-white mb-5 leading-tight tracking-tight">
-            Marine IQ Modules
-          </h2>
-          <p className="text-slate-400 max-w-2xl mx-auto text-[clamp(1rem,1.5vw,1.2rem)] leading-relaxed">
+          <div>
+            <h2 className="mb-5">Marine IQ Modules</h2>
+          </div>
+          <p className="max-w-2xl mx-auto">
             The complete ecosystem for maritime excellence — every tool your fleet needs, in one unified platform.
           </p>
           <div className="w-16 h-0.75 bg-linear-to-r from-blue-400 via-blue-500 to-blue-600 rounded-full mx-auto mt-6" />
@@ -63,8 +63,10 @@ export default function Modules() {
 
                   {/* Text */}
                   <div>
-                     <h4 className="text-[1rem] font-bold text-white mb-1 pt-4">{title}</h4>
-                  <p className="text-[0.8rem] text-slate-500 leading-relaxed">{desc}</p>
+                     <div>
+                       <h4 className="mb-1 pt-4">{title}</h4>
+                     </div>
+                  <p>{desc}</p>
                   </div>
                 </div>
               ))}

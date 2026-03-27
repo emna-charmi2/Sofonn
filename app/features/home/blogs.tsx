@@ -1,4 +1,8 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const BLOG_POSTS = [
   {
@@ -31,56 +35,61 @@ const BLOG_POSTS = [
 ];
 
 export default function Blog() {
-  return (
-    <section className="py-28 px-4 sm:px-8 bg-[#050c1a] relative overflow-hidden">
-      {/* Background glows */}
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse at top, rgba(59,130,246,0.10) 0%, transparent 60%)",
-        }}
-      />
-      <div
-        className="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[500px] rounded-full pointer-events-none"
-        style={{ background: "rgba(59,130,246,0.12)", filter: "blur(120px)" }}
-      />
-      <div
-        className="absolute bottom-0 right-0 w-[400px] h-[400px] rounded-full pointer-events-none"
-        style={{ background: "rgba(37,99,235,0.08)", filter: "blur(130px)" }}
-      />
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 120,
+      easing: "ease-out-cubic",
+    });
+  }, []);
 
-      <div className="relative z-10 max-w-7xl mx-auto">
+  return (
+  <section className="py-28 px-4 sm:px-8 relative overflow-hidden">
+        {/* Background glows */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 right-0 w-125 h-125 bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
+
+        <div className="w-[80%] max-w-480 mx-auto relative z-10">
         {/* Header */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-end mb-14 gap-6">
           <div>
-            <span className="inline-block text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full border"
+            <span
+              className="inline-block text-xs font-bold tracking-widest uppercase mb-3 px-3 py-1 rounded-full border"
               style={{
                 color: "#60a5fa",
                 background: "rgba(59,130,246,0.10)",
                 borderColor: "rgba(59,130,246,0.20)",
               }}
+              data-aos="fade-up"
             >
               Knowledge Hub
             </span>
-            <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-3 leading-tight tracking-tight">
+            <h2 data-aos="fade-up" data-aos-delay="100">
               Latest From our Blog
             </h2>
-            <p className="text-sm text-slate-400 max-w-md leading-relaxed">
+            <p data-aos="fade-up" data-aos-delay="200">
               Stay updated with the newest trends in maritime technology and sustainability.
             </p>
           </div>
           <a
             href="#"
             className="shrink-0 flex items-center gap-2 text-sm font-semibold text-blue-400 hover:text-blue-300 transition-colors duration-200 group"
+            data-aos="fade-left"
+            data-aos-delay="300"
           >
             View All Posts
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="16" height="16"
-              viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" strokeWidth="2.5"
-              strokeLinecap="round" strokeLinejoin="round"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
               className="transition-transform duration-200 group-hover:translate-x-1"
             >
               <path d="M5 12h14M12 5l7 7-7 7" />
@@ -98,14 +107,17 @@ export default function Blog() {
                 background: "rgba(255,255,255,0.03)",
                 borderColor: "rgba(255,255,255,0.07)",
               }}
-              onMouseEnter={e => {
+              onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "rgba(59,130,246,0.35)";
                 e.currentTarget.style.boxShadow = "0 24px 48px rgba(59,130,246,0.12)";
               }}
-              onMouseLeave={e => {
+              onMouseLeave={(e) => {
                 e.currentTarget.style.borderColor = "rgba(255,255,255,0.07)";
                 e.currentTarget.style.boxShadow = "none";
               }}
+              data-aos="fade-up"
+              data-aos-delay={i * 100}
+              data-aos-duration="600"
             >
               {/* Image */}
               <div className="relative w-full aspect-video overflow-hidden">
@@ -116,7 +128,7 @@ export default function Blog() {
                 />
                 {/* Image overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#050c1a]/60 to-transparent" />
-                {/* Tag badge over image */}
+                {/* Tag badge over image - now with animation */}
                 <span
                   className="absolute top-4 left-4 text-xs font-bold tracking-wider uppercase px-3 py-1 rounded-full border"
                   style={{
@@ -125,6 +137,9 @@ export default function Blog() {
                     borderColor: post.tagBorder,
                     backdropFilter: "blur(8px)",
                   }}
+                  data-aos="fade-down"
+                  data-aos-delay={i * 100 + 50}
+                  data-aos-duration="500"
                 >
                   {post.tag}
                 </span>
@@ -132,12 +147,8 @@ export default function Blog() {
 
               {/* Body */}
               <div className="flex flex-col flex-1 p-6 gap-3">
-                <h3 className="text-base font-bold text-white leading-snug group-hover:text-blue-300 transition-colors duration-200">
-                  {post.title}
-                </h3>
-                <p className="text-sm text-slate-400 leading-relaxed flex-1">
-                  {post.excerpt}
-                </p>
+                <h4>{post.title}</h4>
+                <p className="flex-1">{post.excerpt}</p>
 
                 {/* Read more */}
                 <a
@@ -147,10 +158,14 @@ export default function Blog() {
                   Read More
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="14" height="14"
-                    viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" strokeWidth="2.5"
-                    strokeLinecap="round" strokeLinejoin="round"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="transition-transform duration-200 group-hover/link:translate-x-1"
                   >
                     <path d="M5 12h14M12 5l7 7-7 7" />

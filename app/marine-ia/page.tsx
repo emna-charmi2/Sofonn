@@ -7,7 +7,7 @@ export const metadata: Metadata = {
 
 export default function MarineAIPage() {
   return (
-    <div className="relative min-h-screen flex flex-col overflow-x-hidden section font-sans" style={{ color: 'var(--text-primary)' }}>
+    <div className="relative min-h-screen flex flex-col overflow-x-hidden ds-page font-sans">
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
@@ -51,28 +51,28 @@ export default function MarineAIPage() {
 
         <div className="max-w-5xl mx-auto relative z-10 h-24 text-center">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-8" style={{ background: 'var(--accent-dim)', border: '1px solid var(--accent-border)', color: 'var(--text-accent)' }}>
+          <div className="ds-chip mb-8">
             <span className="relative flex h-2 w-2">
-              <span className="ping-dot absolute inline-flex h-full w-full rounded-full opacity-75" style={{ background: 'var(--accent)' }} />
-              <span className="relative inline-flex rounded-full h-2 w-2" style={{ background: 'var(--accent)' }} />
+              <span className="ping-dot absolute inline-flex h-full w-full rounded-full opacity-75 bg-[var(--accent)]" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--accent)]" />
             </span>
             Neural Core v4.0 Active
           </div>
 
-          <h1 className="text-5xl md:text-7xl font-black mb-8 leading-[1.1] tracking-tight text-gradient-red">
-            Marine AI: The Maritime Digital Brain
+          <h1 className="mb-8">
+            <span className="text-gradient-red">Marine AI: The Maritime Digital Brain</span>
           </h1>
 
-          <p className="text-lg md:text-xl max-w-3xl mx-auto leading-relaxed mb-12" style={{ color: 'var(--text-secondary)' }}>
+          <p className="max-w-3xl mx-auto mb-12">
             Our AI module revolutionizes maritime operations with deep analytics and predictive models for optimized routes, predictive maintenance, and continuous improvement, driving efficiency, cost reduction, and risk mitigation.
           </p>
 
           <div className="flex flex-wrap justify-center gap-6">
-            <button className="px-8 py-4 font-bold rounded-xl hover:scale-105 transition-transform flex items-center gap-2 red-glow cursor-pointer" style={{ background: 'var(--accent)', color: 'var(--text-primary)' }}>
+            <button type="button" className="px-8 py-4 rounded-xl hover:scale-105 transition-transform flex items-center gap-2 red-glow cursor-pointer ds-btn-primary">
               Explore the Engine
               <span className="material-symbols-outlined">arrow_forward</span>
             </button>
-            <button className="px-8 py-4 font-bold rounded-xl transition-colors cursor-pointer" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-card)', color: 'var(--text-primary)' }}>
+            <button type="button" className="px-8 py-4 rounded-xl cursor-pointer ds-btn-ghost">
               Watch Technical Demo
             </button>
           </div>
@@ -81,10 +81,10 @@ export default function MarineAIPage() {
         {/* Hero visual */}
         <div className="max-w-7xl mx-auto mt-24">
           <div className="liquid-glass rounded-2xl p-4 overflow-hidden group">
-            <div className="aspect-video w-full rounded-xl bg-slate-900 overflow-hidden relative">
+            <div className="aspect-video w-full rounded-xl bg-[var(--bg-level-1)] overflow-hidden relative">
               {/* Dark gradient placeholder */}
               <div className="w-full h-full bg-gradient-to-br from-[var(--bg-level-1)] via-[var(--bg-level-2)] to-[var(--bg-base)] flex items-center justify-center">
-                <span className="material-symbols-outlined text-[var(--accent-glow)]" style={{fontSize:'8rem'}}>hub</span>
+                <span className="material-symbols-outlined text-[var(--accent-glow)] ds-icon-2xl">hub</span>
               </div>
               <div className="absolute inset-0 bg-gradient-to-t from-[var(--bg-base)] via-transparent to-transparent" />
 
@@ -92,12 +92,12 @@ export default function MarineAIPage() {
               <div className="absolute bottom-10 left-10 flex items-center gap-6">
                 <div className="flex flex-col">
                   <span className="text-[var(--text-accent)] text-2xl font-black">94%</span>
-                  <span className="text-xs uppercase text-slate-400 font-bold tracking-widest">Accuracy</span>
+                  <span className="text-xs uppercase ds-text-secondary font-bold tracking-widest">Accuracy</span>
                 </div>
-                <div className="w-px h-10 bg-white/10" />
+                <div className="ds-divider-vertical" />
                 <div className="flex flex-col">
                   <span className="text-[var(--text-accent)] text-2xl font-black">12.4k</span>
-                  <span className="text-xs uppercase text-slate-400 font-bold tracking-widest">Nodes Active</span>
+                  <span className="text-xs uppercase ds-text-secondary font-bold tracking-widest">Nodes Active</span>
                 </div>
               </div>
             </div>
@@ -106,16 +106,16 @@ export default function MarineAIPage() {
       </section>
 
       {/* ── TECHNICAL CORE ── */}
-      <section className="py-24 px-6 section">
+      <section className="py-24 px-6 ds-section-alt">
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             {/* Left */}
             <div>
-              <h2 className="font-bold uppercase tracking-[0.2em] text-sm mb-4" style={{ color: 'var(--text-accent)' }}>
-                Neural Architecture
-              </h2>
-              <h3 className="text-4xl md:text-5xl font-black mb-8">The Engineered Intelligence</h3>
-              <p className="text-lg mb-12 leading-relaxed" style={{ color: 'var(--text-secondary)' }}>
+              <div className="ds-text-accent uppercase tracking-[0.2em] mb-4">
+                <span>Neural Architecture</span>
+              </div>
+              <h3 className="mb-8">The Engineered Intelligence</h3>
+              <p className="mb-12">
                 At the center of Marine AI is a multi-layered neural network trained on petabytes of historical maritime data. Our architecture processes real-time environmental variables to synthesize optimal operational decisions.
               </p>
 
@@ -148,8 +148,8 @@ export default function MarineAIPage() {
                       <span className="material-symbols-outlined text-[var(--text-accent)]">{icon}</span>
                     </div>
                     <div>
-                      <h4 className="text-xl font-bold mb-2">{title}</h4>
-                      <p className="text-slate-400 text-sm">{desc}</p>
+                      <h4 className="mb-2">{title}</h4>
+                      <p>{desc}</p>
                     </div>
                   </div>
                 ))}
@@ -159,8 +159,8 @@ export default function MarineAIPage() {
             {/* Right — visual */}
             <div className="relative">
               <div className="absolute -inset-10 bg-[var(--accent-glow)] blur-[100px] rounded-full" />
-              <div className="relative z-10 rounded-3xl border border-white/5 overflow-hidden aspect-square bg-gradient-to-br from-[var(--bg-level-2)] via-[var(--bg-level-1)] to-[var(--bg-base)] flex items-center justify-center">
-                <span className="material-symbols-outlined text-[var(--accent-glow)]" style={{fontSize:'12rem'}}>memory</span>
+              <div className="relative z-10 rounded-3xl border border-[var(--border-subtle)] overflow-hidden aspect-square bg-gradient-to-br from-[var(--bg-level-2)] via-[var(--bg-level-1)] to-[var(--bg-base)] flex items-center justify-center">
+                <span className="material-symbols-outlined text-[var(--accent-glow)] ds-icon-12rem">memory</span>
                 {/* Grid overlay */}
                 <svg className="absolute inset-0 w-full h-full opacity-5" xmlns="http://www.w3.org/2000/svg">
                   <defs>
@@ -177,11 +177,11 @@ export default function MarineAIPage() {
       </section>
 
       {/* ── STRATEGIC BENEFITS ── */}
-      <section className="py-24 px-6 relative overflow-hidden">
+      <section className="py-24 px-6 relative overflow-hidden section">
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center mb-20">
-            <h2 className="text-4xl md:text-5xl font-black mb-6">Strategic Benefits</h2>
-            <p className="text-slate-400 max-w-2xl mx-auto">
+            <h2 className="mb-6">Strategic Benefits</h2>
+            <p className="max-w-2xl mx-auto">
               Tangible operational advantages delivered through our integrated AI framework.
             </p>
           </div>
@@ -211,8 +211,8 @@ export default function MarineAIPage() {
                 <div className="w-16 h-16 bg-[var(--accent-dim)] rounded-2xl flex items-center justify-center mb-8 group-hover:scale-110 transition-transform">
                   <span className="material-symbols-outlined text-[var(--text-accent)] text-3xl">{icon}</span>
                 </div>
-                <h4 className="text-2xl font-bold mb-4">{title}</h4>
-                <p className="text-slate-400 leading-relaxed mb-6">{desc}</p>
+                <h4 className="mb-4">{title}</h4>
+                <p className="mb-6">{desc}</p>
                 <div className="h-1 w-12 bg-[var(--accent-border)] rounded-full group-hover:w-full transition-all duration-500" />
               </div>
             ))}
@@ -221,16 +221,16 @@ export default function MarineAIPage() {
       </section>
 
       {/* ── OPERATIONAL IMPACT ── */}
-      <section className="py-24 px-6 bg-slate-950/50 border-y border-white/5">
+      <section className="py-24 px-6 ds-section-alt border-y border-[var(--border-subtle)]">
         <div className="max-w-7xl mx-auto">
           <div className="liquid-glass rounded-3xl p-12 overflow-hidden relative">
             {/* Bg icon */}
             <div className="absolute top-0 right-0 p-8 opacity-10 pointer-events-none">
-              <span className="material-symbols-outlined text-[var(--text-accent)]" style={{fontSize:'200px'}}>analytics</span>
+              <span className="material-symbols-outlined text-[var(--text-accent)] ds-icon-deco-200">analytics</span>
             </div>
 
             <div className="relative z-10">
-              <h3 className="text-3xl font-black mb-12">System Efficiency Gains</h3>
+              <h3 className="mb-12">System Efficiency Gains</h3>
               <div className="grid md:grid-cols-4 gap-12">
                 {[
                   { label: 'Fuel Savings',   value: '22%', pct: '22%' },
@@ -240,10 +240,10 @@ export default function MarineAIPage() {
                 ].map(({ label, value, pct }) => (
                   <div key={label} className="space-y-4">
                     <div className="flex justify-between items-end">
-                      <span className="text-slate-400 text-sm font-bold uppercase tracking-wider">{label}</span>
+                      <span className="ds-text-secondary text-sm font-bold uppercase tracking-wider">{label}</span>
                       <span className="text-[var(--text-accent)] font-bold">{value}</span>
                     </div>
-                    <div className="h-2 w-full bg-white/5 rounded-full overflow-hidden">
+                    <div className="h-2 w-full ds-surface-inset rounded-full overflow-hidden">
                       <div className="h-full bg-[var(--accent)] rounded-full" style={{ width: pct }} />
                     </div>
                   </div>

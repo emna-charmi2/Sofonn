@@ -62,13 +62,15 @@ export default function Footer() {
           <div className="sm:col-span-2 lg:col-span-1">
             {/* Le logo qui change avec le thème est géré via CSS vars dans globals.css
                 Alternative simple : deux images, visibilité contrôlée par data-theme */}
-            <h4 className="text-m font-medium transition-colors " style={{ color: 'var(--text-primary)' }}>
-              About Us
-            </h4>
-            <p className="text-sm leading-relaxed mb-6 max-w-xs pt-3" style={{ color: 'var(--text-muted)' }}>
+            <div style={{ color: 'var(--text-primary)' }}>
+              <h4>About Us</h4>
+            </div>
+            <div className="mb-6 max-w-xs pt-3" style={{ color: 'var(--text-muted)' }}>
+              <p>
               SOFONN optimizes marine operations with digital solutions. Marine-Eco
               supports eco-conscious practices through emission reduction and fuel optimization.
-            </p>
+              </p>
+            </div>
             <div className="flex gap-3">
               {[{ icon: 'in', label: 'LinkedIn' }, { icon: '𝕏', label: 'X' }, { icon: '@', label: 'Email' }].map(({ icon, label }) => (
                 <a
@@ -88,9 +90,9 @@ export default function Footer() {
 
           {/* Solutions */}
           <div>
-            <h4 className="text-m font-medium transition-colors " style={{ color: 'var(--text-primary)' }}>
-              Solutions
-            </h4>
+            <div style={{ color: 'var(--text-primary)' }}>
+              <h4>Solutions</h4>
+            </div>
             <ul className="space-y-3 pt-3">
               {SOLUTIONS.map((s) => (
                 <li key={s.label}><FooterLink {...s} /></li>
@@ -100,9 +102,9 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="text-m font-medium transition-colors  " style={{ color: 'var(--text-primary)' }}>
-              Company
-            </h4>
+            <div style={{ color: 'var(--text-primary)' }}>
+              <h4>Company</h4>
+            </div>
             <ul className="space-y-3 pt-3">
               {COMPANY.map((c) => (
                 <li key={c.label}><FooterLink {...c} color="#00b0ff" /></li>
@@ -112,12 +114,14 @@ export default function Footer() {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-m font-medium transition-colors " style={{ color: 'var(--text-primary)' }}>
-              Newsletter
-            </h4>
-            <p className="text-sm leading-relaxed mb-4 pt-3" style={{ color: 'var(--text-muted)' }}>
+            <div style={{ color: 'var(--text-primary)' }}>
+              <h4>Newsletter</h4>
+            </div>
+            <div className="mb-4 pt-3" style={{ color: 'var(--text-muted)' }}>
+              <p>
               Stay updated with our latest maritime tech insights and innovations.
-            </p>
+              </p>
+            </div>
             <div className="relative flex items-center">
               <input
                 type="email"
@@ -143,9 +147,11 @@ export default function Footer() {
           className="flex flex-col sm:flex-row justify-between items-center mt-12 pt-3 gap-4"
           style={{ borderTop: '1px solid var(--border-subtle)' }}
         >
-          <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+          <div style={{ color: 'var(--text-muted)' }}>
+            <p>
             © {new Date().getFullYear()} Sofonn Technologies. All rights reserved.
-          </p>
+            </p>
+          </div>
           <div className="flex gap-6">
             {['Privacy Policy', 'Terms of Service', 'Cookies'].map((item) => (
               <Link key={item} href="#" className="text-xs transition-colors hover:opacity-80" style={{ color: 'var(--text-muted)' }}>

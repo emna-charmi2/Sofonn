@@ -13,66 +13,11 @@
 }
 
 /* ============================================================
-   ANIMATIONS GLOBALES
-   ============================================================ */
-@keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-}
-
-@keyframes float-delay {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-12px); }
-}
-
-@keyframes float-delay-2 {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-18px); }
-}
-
-@keyframes spin-slow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-@keyframes spin-slow-reverse {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(-360deg); }
-}
-
-.animate-float {
-  animation: float 4s ease-in-out infinite;
-}
-
-.animate-float-delay {
-  animation: float-delay 5s ease-in-out infinite;
-}
-
-.animate-float-delay-2 {
-  animation: float-delay-2 4.5s ease-in-out infinite;
-}
-
-.animate-spin-slow {
-  animation: spin-slow 20s linear infinite;
-}
-
-.animate-spin-slow-reverse {
-  animation: spin-slow-reverse 15s linear infinite;
-}
-
-.animate-pulse-slow {
-  animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-/* ============================================================
-   1. CSS VARIABLES — DARK MODE (default) + COULEUR UNIFORME
+   1. CSS VARIABLES — DARK MODE (default)
    ============================================================ */
 :root,
 [data-theme="dark"] {
-  /* ── COULEUR DE FOND PRINCIPALE POUR TOUTES LES SECTIONS ── */
-  --bg-section: #231b33;
-
-  /* Autres variables utiles (tu peux les garder ou les supprimer si tu n'en as plus besoin) */
+  /* Background layers — chaque section utilise un niveau différent */
   --bg-base:        #080b18;
   --bg-level-1:     #0a0d1f;
   --bg-level-2:     #0d1028;
@@ -82,90 +27,269 @@
   --bg-card:        rgba(255, 255, 255, 0.03);
   --bg-card-hover:  rgba(255, 255, 255, 0.055);
 
-  --accent:         #3b82f6;
-  --accent-light:   #60a5fa;
-  --accent-dim:     rgba(59, 130, 246, 0.15);
-  --accent-border:  rgba(59, 130, 246, 0.2);
-  --accent-glow:    rgba(59, 130, 246, 0.08);
+  /* Section gradients */
+  --gradient-s1: linear-gradient(150deg, #080b18 0%, #0a0d2e 100%);
+  --gradient-s2: linear-gradient(135deg, #06081a 0%, #0c1130 60%, #080c22 100%);
+  --gradient-s3: linear-gradient(160deg, #0d1020 0%, #111830 50%, #0a0e20 100%);
+  --gradient-s4: linear-gradient(145deg, #0f1225 0%, #0a0d1e 100%);
+  --gradient-s5: linear-gradient(155deg, #0b0f20 0%, #131728 60%, #0d1122 100%);
+  --gradient-s6: linear-gradient(140deg, #080b18 0%, #0e1228 100%);
 
+  /* Accent */
+  --accent:        #3b82f6;
+  --accent-light:  #60a5fa;
+  --accent-dim:    rgba(59, 130, 246, 0.15);
+  --accent-border: rgba(59, 130, 246, 0.2);
+  --accent-glow:   rgba(59, 130, 246, 0.08);
+
+  /* Text */
   --text-primary:   #f1f5f9;
   --text-secondary: #94a3b8;
   --text-muted:     #475569;
   --text-accent:    #60a5fa;
 
-  --border-subtle:  rgba(255, 255, 255, 0.06);
-  --border-card:    rgba(255, 255, 255, 0.08);
-  --border-accent:  rgba(59, 130, 246, 0.25);
+  /* Typography — couleurs spécifiques */
+  --color-heading: #ffffff;          
+  --color-body:    #cbd5e1;       
 
+  /* Borders */
+  --border-subtle: rgba(255, 255, 255, 0.06);
+  --border-card:   rgba(255, 255, 255, 0.08);
+  --border-accent: rgba(59, 130, 246, 0.25);
+
+  /* Divider */
   --divider: linear-gradient(90deg, transparent, rgba(59,130,246,0.25), transparent);
-  --shadow-card:    0 4px 32px rgba(0, 0, 0, 0.45);
-  --shadow-glow:    0 0 40px rgba(59, 130, 246, 0.12);
+
+  /* Shadows */
+  --shadow-card: 0 4px 32px rgba(0, 0, 0, 0.45);
+  --shadow-glow: 0 0 40px rgba(59, 130, 246, 0.12);
+
+
+  --text-base:  1rem;       /* 16px  — p  */
+  --text-h6:    1rem;       /* 16px  — h6 */
+  --text-h5:    1.125rem;   /* 18px  — h5 */
+  --text-h4:    1.15rem;    /* 20px  — h4 */
+  --text-h3:    1.2rem;     /* 24px  — h3 */
+  --text-h2:    1.875rem;   /* 30px  — h2 */
+  --text-h1:    2.25rem;    /* 36px  — h1 (mobile-first) */
+
+  /* Line-heights */
+  --leading-heading: 1.2;
+  --leading-body:    1.7;
+
+  /* Marges basses harmonisées */
+  --mb-heading: 0.5em;
+  --mb-body:    1em;
 }
 
 /* ============================================================
-   2. CSS VARIABLES — LIGHT MODE (si tu l'utilises un jour)
+   2. CSS VARIABLES — LIGHT MODE
    ============================================================ */
 [data-theme="light"] {
-  --bg-section:     #f8fafc;     /* tu peux changer si tu veux un light mode */
-
   --bg-base:        #f8fafc;
   --bg-level-1:     #ffffff;
   --bg-level-2:     #f1f5f9;
   --bg-level-3:     #e8f0fe;
   --bg-level-4:     #f8fafc;
   --bg-level-5:     #eef2ff;
+  --bg-card:        rgba(0, 0, 0, 0.025);
+  --bg-card-hover:  rgba(0, 0, 0, 0.045);
 
-  --accent:         #2563eb;
-  --accent-light:   #3b82f6;
+  --gradient-s1: linear-gradient(150deg, #ffffff 0%, #f0f4ff 100%);
+  --gradient-s2: linear-gradient(135deg, #f8fafc 0%, #e8f0fe 60%, #f1f5ff 100%);
+  --gradient-s3: linear-gradient(160deg, #f1f5f9 0%, #e0e9ff 50%, #f8fafc 100%);
+  --gradient-s4: linear-gradient(145deg, #eef2ff 0%, #f8fafc 100%);
+  --gradient-s5: linear-gradient(155deg, #f0f4ff 0%, #e8f0fe 60%, #f5f8ff 100%);
+  --gradient-s6: linear-gradient(140deg, #ffffff 0%, #eef2ff 100%);
+
+  --accent:        #2563eb;
+  --accent-light:  #3b82f6;
+  --accent-dim:    rgba(37, 99, 235, 0.08);
+  --accent-border: rgba(37, 99, 235, 0.2);
+  --accent-glow:   rgba(37, 99, 235, 0.06);
+
   --text-primary:   #0f172a;
   --text-secondary: #475569;
   --text-muted:     #94a3b8;
   --text-accent:    #2563eb;
 
-  --border-subtle:  rgba(0, 0, 0, 0.06);
-  --border-card:    rgba(0, 0, 0, 0.08);
+  /* Typography — couleurs spécifiques */
+  --color-heading: #000000;          /* h1–h6 : noir en light */
+  --color-body:    #374151;          /* p : gris foncé lisible en light (gray-700) */
+
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-card:   rgba(0, 0, 0, 0.08);
+  --border-accent: rgba(37, 99, 235, 0.2);
+
+  --divider: linear-gradient(90deg, transparent, rgba(37,99,235,0.2), transparent);
+
+  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-glow: 0 0 40px rgba(37, 99, 235, 0.08);
+}
+
+/* ── Fallback : préférence système (si aucun data-theme n'est posé) ── */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --bg-base:        #f8fafc;
+    --bg-level-1:     #ffffff;
+    --bg-level-2:     #f1f5f9;
+    --bg-level-3:     #e8f0fe;
+    --bg-level-4:     #f8fafc;
+    --bg-level-5:     #eef2ff;
+    --bg-card:        rgba(0, 0, 0, 0.025);
+    --bg-card-hover:  rgba(0, 0, 0, 0.045);
+
+    --gradient-s1: linear-gradient(150deg, #ffffff 0%, #f0f4ff 100%);
+    --gradient-s2: linear-gradient(135deg, #f8fafc 0%, #e8f0fe 60%, #f1f5ff 100%);
+    --gradient-s3: linear-gradient(160deg, #f1f5f9 0%, #e0e9ff 50%, #f8fafc 100%);
+    --gradient-s4: linear-gradient(145deg, #eef2ff 0%, #f8fafc 100%);
+    --gradient-s5: linear-gradient(155deg, #f0f4ff 0%, #e8f0fe 60%, #f5f8ff 100%);
+    --gradient-s6: linear-gradient(140deg, #ffffff 0%, #eef2ff 100%);
+
+    --accent:        #2563eb;
+    --accent-light:  #3b82f6;
+    --accent-dim:    rgba(37, 99, 235, 0.08);
+    --accent-border: rgba(37, 99, 235, 0.2);
+    --accent-glow:   rgba(37, 99, 235, 0.06);
+
+    --text-primary:   #0f172a;
+    --text-secondary: #475569;
+    --text-muted:     #94a3b8;
+    --text-accent:    #2563eb;
+
+    --color-heading:  #000000;
+    --color-body:     #374151;
+
+    --border-subtle: rgba(0, 0, 0, 0.06);
+    --border-card:   rgba(0, 0, 0, 0.08);
+    --border-accent: rgba(37, 99, 235, 0.2);
+
+    --divider: linear-gradient(90deg, transparent, rgba(37,99,235,0.2), transparent);
+
+    --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.08);
+    --shadow-glow: 0 0 40px rgba(37, 99, 235, 0.08);
+  }
 }
 
 /* ============================================================
-   3. TYPOGRAPHY SYSTEM
+   3. TRANSITIONS POUR LE TOGGLE
    ============================================================ */
+html {
+  color-scheme: dark light;
+}
+
+body {
+  background: var(--bg-base);
+  color: var(--text-primary);
+  transition: background-color 0.25s ease, color 0.2s ease;
+}
+
+[class^="section-s"],
+[class*=" section-s"] {
+  transition: background 0.3s ease;
+}
+
+p {
+  transition: color 0.2s ease;
+}
+
+/* ============================================================
+   4. TYPOGRAPHIE — TITRES (h1–h6)
+   Échelle modulaire Major Third (~×1.25)
+   Mobile-first, agrandie progressivement via clamp() ou
+   media queries selon la complexité souhaitée.
+   ============================================================ */
+
 h1, h2, h3, h4, h5, h6,
 .font-display {
+  color:          var(--color-heading);
+  line-height:    var(--leading-heading);
+  letter-spacing: -0.02em;
+  margin-bottom:  var(--mb-heading);
+  transition:     color 0.2s ease;
+}
+
+/* ── Hiérarchie typographique complète ───────────────────────
+   Taille   : décroît à chaque niveau  (h1 biggest → h6 smallest)
+   Graisse  : décroît à chaque niveau  (h1 900 → h6 500)
+   L'écart entre niveaux est suffisamment visible pour que
+   la hiérarchie soit immédiatement perceptible.
+   ─────────────────────────────────────────────────────────── */
+
+h1 {
+  font-size:   clamp(2.25rem, 5.5vw, 4rem);   /* 36px → 64px */
+  font-weight: 900;
+  letter-spacing: -0.03em;
+}
+
+h2 {
+  font-size:   clamp(1.75rem, 4vw, 2.75rem);  /* 28px → 44px */
+  font-weight: 800;
+  letter-spacing: -0.025em;
+}
+
+h3 {
+  font-size:   clamp(1.375rem, 2.8vw, 2rem);  /* 22px → 32px */
+  font-weight: 700;
   letter-spacing: -0.02em;
 }
 
+h4 {
+  font-size:   clamp(1.125rem, 2vw, 1.5rem);  /* 18px → 24px */
+  font-weight: 600;
+  letter-spacing: -0.015em;
+}
+
+h5 {
+  font-size:   clamp(1rem, 1.5vw, 1.25rem);   /* 16px → 20px */
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+h6 {
+  font-size:   clamp(0.875rem, 1.2vw, 1rem);  /* 14px → 16px */
+  font-weight: 500;
+  letter-spacing: 0em;
+}
+
 /* ============================================================
-   4. REUSABLE SECTION STYLES
+   5. TYPOGRAPHIE — PARAGRAPHES (p)
    ============================================================ */
 
-/* Classe principale pour toutes tes sections (recommandée) */
-.section {
-  background: var(--bg-section);
-  width: 100%;
+p {
+  color:         var(--color-body);
+  font-size:     clamp(0.9375rem, 1.5vw, 1.0625rem); /* 15px → 17px */
+  line-height:   var(--leading-body);
+  margin-bottom: var(--mb-body);
+  transition:    color 0.2s ease;
 }
 
-/* Si tu veux garder les anciennes classes pour le moment */
-.section-s1,
-.section-s2,
-.section-s3,
-.section-s4,
-.section-s5,
-.section-s6 {
-  background: var(--bg-section);   /* toutes utilisent maintenant la même couleur */
+/* Supprime la marge basse sur le dernier enfant pour éviter
+   l'espace superflu à l'intérieur des conteneurs */
+p:last-child {
+  margin-bottom: 0;
 }
 
-/* Divider entre sections (optionnel) */
+/* ============================================================
+   6. SECTION STYLES
+   ============================================================ */
+.section-s1 { background: var(--gradient-s1); }
+.section-s2 { background: var(--gradient-s2); }
+.section-s3 { background: var(--gradient-s3); }
+.section-s4 { background: var(--gradient-s4); }
+.section-s5 { background: var(--gradient-s5); }
+.section-s6 { background: var(--gradient-s6); }
+
 .section-divider {
   height: 1px;
   background: var(--divider);
 }
 
 /* ============================================================
-   5. AUTRES STYLES (animations, blog, cta, etc.)
+   7. ANIMATIONS
    ============================================================ */
-
 @keyframes spin-cube {
-  0% { transform: rotateX(0deg) rotateY(0deg); }
+  0%   { transform: rotateX(0deg)   rotateY(0deg); }
   100% { transform: rotateX(360deg) rotateY(360deg); }
 }
 
@@ -177,7 +301,7 @@ h1, h2, h3, h4, h5, h6,
   perspective: 1000px;
 }
 
-/* Blog card */
+/* Blog card image zoom */
 .blog-img-wrap {
   overflow: hidden;
   border-radius: 0.75rem;
@@ -189,7 +313,7 @@ h1, h2, h3, h4, h5, h6,
   transform: scale(1.08);
 }
 
-/* CTA */
+/* CTA section */
 .cta-blob {
   background: linear-gradient(135deg, rgba(59,130,246,0.18) 0%, transparent 60%);
   border-radius: 2.5rem;
@@ -198,9 +322,5 @@ h1, h2, h3, h4, h5, h6,
 
 @keyframes blink {
   0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
-
-.cursor {
-  animation: blink 1.2s infinite;
+  50%       { opacity: 0; }
 }

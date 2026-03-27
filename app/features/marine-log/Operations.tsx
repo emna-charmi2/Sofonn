@@ -73,13 +73,11 @@ const companyFeatures = [
 
 export default function Operations() {
   return (
-    <section
-      className="px-6 lg:px-20 py-24 bg-white/[0.015]"
-      data-aos="fade-up"
-      data-aos-duration="800"
-    >
-      <div className="max-w-6xl mx-auto">
-        <h2 className="text-[clamp(1.8rem,4vw,2.8rem)] font-extrabold text-white text-center mb-2">
+       <section className="py-28 px-4 sm:px-8 relative overflow-hidden">
+        {/* Background glows */}
+
+        <div className="w-[80%] max-w-480 mx-auto relative z-10">
+        <h2 className="text-center mb-16">
           How Marine Log Transforms Maritime Operations
         </h2>
         <div className="w-12 h-[3px] bg-[#FFC700] rounded-full mx-auto mt-3 mb-14" />
@@ -87,7 +85,7 @@ export default function Operations() {
         {/* For Crew */}
         <div className="mb-14" data-aos="fade-up" data-aos-delay="100">
           <div className="flex items-center gap-4 mb-8">
-            <h3 className="text-[1.1rem] font-extrabold text-white whitespace-nowrap">
+            <h3 className="">
               For Crew
             </h3>
             <div className="flex-1 h-px bg-white/[0.07]" />
@@ -111,12 +109,10 @@ export default function Operations() {
                       {icon}
                     </span>
                   </div>
-                  <h4 className="text-[1rem] font-bold text-white mb-1 pt-4">
-                    {title}
-                  </h4>
-                  <p className="text-[0.8rem] text-slate-500 leading-relaxed">
-                    {desc}
-                  </p>
+                  <div className="pt-4">
+                    <h4>{title}</h4>
+                  </div>
+                  <p>{desc}</p>
                 </div>
               </div>
             ))}
@@ -126,7 +122,7 @@ export default function Operations() {
         {/* For Shipping Companies */}
         <div data-aos="fade-up" data-aos-delay="200">
           <div className="flex items-center gap-4 mb-8">
-            <h3 className="text-[1.1rem] font-extrabold text-white whitespace-nowrap">
+            <h3 >
               For Shipping Companies
             </h3>
             <div className="flex-1 h-px bg-white/[0.07]" />
@@ -152,10 +148,10 @@ export default function Operations() {
                       {icon}
                     </span>
                   </div>
-                  <h4 className="text-[1rem] font-bold text-white mb-1 pt-4">
-                    {title}
-                  </h4>
-                  <p className="text-[0.8rem] text-slate-500 leading-relaxed">
+                   <div className="pt-4">
+                    <h4>{title}</h4>
+                  </div>
+                  <p>
                     {desc}
                   </p>
                 </div>

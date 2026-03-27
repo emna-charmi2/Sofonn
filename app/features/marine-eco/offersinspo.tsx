@@ -120,12 +120,12 @@ function FeatureCard({ feature, active, cardRef }: { feature: Feature; active: b
           {icon}
         </div>
       </div>
-      <h3 className="text-lg font-semibold mb-2" style={{ color: active ? "#fff" : "rgba(255,255,255,0.35)" }}>
-        {title}
-      </h3>
-      <p className="text-sm leading-relaxed" style={{ color: active ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.2)" }}>
-        {desc}
-      </p>
+      <div style={{ color: active ? "#fff" : "rgba(255,255,255,0.35)" }}>
+        <h3 className="mb-2">{title}</h3>
+      </div>
+      <div style={{ color: active ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0.2)" }}>
+        <p>{desc}</p>
+      </div>
     </div>
   );
 }
@@ -177,13 +177,13 @@ export default function offersinspo() {
       <div className="relative max-w-6xl mx-auto px-5 md:px-6">
         {/* Header repris de la section Offers */}
         <div className="text-center mb-20">
-          <p className="text-blue-400/70 text-sm uppercase tracking-wider font-medium mb-4">
+          <span className="text-blue-400/70 block uppercase tracking-wider mb-4">
             Our Platform
-          </p>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-5">
-            What We Offer
-          </h2>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+          </span>
+          <div className="text-white">
+            <h2 className="mb-5">What We Offer</h2>
+          </div>
+          <p className="max-w-2xl mx-auto">
             Marine IQ delivers a comprehensive suite of tools designed to streamline and optimize every aspect of maritime operations, ensuring efficiency, compliance, and profitability.
           </p>
         </div>

@@ -61,15 +61,9 @@ export default function Services() {
           >
             Nos solutions modulaires
           </p>
-          <h2
-            className="text-3xl lg:text-4xl font-bold"
-            style={{ color: 'var(--text-primary)' }}
-            data-aos="fade-up"
-            data-aos-duration="500"
-            data-aos-delay="80"
-          >
-            Une plateforme, quatre piliers
-          </h2>
+          <div className="" data-aos="fade-up" data-aos-duration="500" data-aos-delay="80">
+            <h2>Une plateforme, quatre piliers</h2>
+          </div>
         </div>
 
         {/* Modules en pleine page */}
@@ -93,7 +87,7 @@ export default function Services() {
                   <div className="flex-1 space-y-6 text-center lg:text-left">
                     <div>
                       <span
-                        className="inline-block text-sm font-semibold tracking-wider uppercase px-3 py-1 rounded-full mb-4"
+                        className="inline-block tracking-wider uppercase px-3 py-1 rounded-full mb-4"
                         style={{
                           backgroundColor: `${module.accent}20`,
                           color: module.accent,
@@ -102,25 +96,19 @@ export default function Services() {
                       >
                         {module.label}
                       </span>
-                      <h3
-                        className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
-                        style={{ color: 'var(--text-primary)' }}
-                      >
-                        {module.fullName}
-                      </h3>
-                      <p
-                        className="text-base md:text-lg leading-relaxed max-w-2xl lg:max-w-none mx-auto lg:mx-0"
-                        style={{ color: 'var(--text-secondary)' }}
-                      >
-                        {module.desc}
-                      </p>
+                      <div>
+                        <h4 >{module.fullName}</h4>
+                      </div>
+                      <div className="max-w-2xl lg:max-w-none mx-auto lg:mx-0">
+                        <p>{module.desc}</p>
+                      </div>
                     </div>
 
                     {/* Lien / bouton */}
                     <div className="pt-4">
                       <a
                         href="#"
-                        className="inline-flex items-center gap-2 text-lg font-medium transition-all duration-300 hover:gap-3"
+                        className="inline-flex items-center gap-2  transition-all duration-300 hover:gap-3"
                         style={{ color: module.accent }}
                         onMouseEnter={(e) =>
                           (e.currentTarget.style.textShadow = `0 0 8px ${module.accent}80`)

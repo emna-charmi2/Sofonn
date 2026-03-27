@@ -12,9 +12,9 @@ export const metadata: Metadata = {
   description: 'Maritime Intelligence Platform',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function MarineLogPage() {
   return (
-    <>
+    <div className="ds-page">
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200');
 
@@ -32,10 +32,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         .animate-pulse-custom { animation: pulse 2s infinite; }
       `}</style>
 
-<AboutUs/>
-      
-  
-      <main>{children}</main>
+      <AboutUs />
 
       {/* ── HOW IT TRANSFORMS ── */}
      <Operations/>
@@ -49,7 +46,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <Modules/>
     <CTA/>
 
-    
-    </>
+    </div>
   );
 }

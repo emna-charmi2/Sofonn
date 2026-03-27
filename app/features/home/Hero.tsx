@@ -7,7 +7,7 @@ import VideoHome from '@/app/components/ui/video-home';
 
 export default function HomeHero() {
   return (
-    <section className="relative min-h-[90vh] md:min-h-screen flex font-lato-regular items-center overflow-hidden bg-black">
+    <section className="relative min-h-[90vh] md:min-h-screen flex font-lato-regular items-center overflow-hidden">
       <div className="absolute inset-0 z-0">
         <Suspense fallback={<div className="absolute inset-0 bg-linear-to-br from-blue-950/80 to-black" />}>
           <VideoHome />
@@ -23,16 +23,17 @@ export default function HomeHero() {
 
       <div className="relative z-20 w-full pt-2 pb-8 md:pb-12 lg:pb-16 xl:pb-20 px-6 md:pl-43.75 md:pr-12">
         <div className="mt-6 pt-3">
-          <div className="w-full xl:w-7/12 md:w-7/12 text-center md:text-start mb-8 md:mb-0">
-            <h1 className="font-lato-regular text-5xl sm:text-6xl lg:text-7xl xl:text-7xl font-light text-white leading-tight pb-2 sm:pb-1">
+          <div className="w-full xl:w-7/12 md:w-7/12 text-center md:text-start mb-8 md:mb-0 text-white">
+          
+            <h1 className="pb-2 sm:pb-1 text-white">
               Enhance your fleet&apos;s standards with
             </h1>
 
-            <h1 className="font-lato-regular text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white font-b leading-tight pb-1 sm:pb-2">
+            <h1 className="pb-1 sm:pb-2 text-white">
               Sofonn Solutions :<br /> Marine <TypingText />
             </h1>
 
-            <h3 className="font-lato-regular text-lg font-light text-white mb-4 leading-relaxed">
+            <h3 className="mb-4 text-white">
               Our innovative, user-friendly technological solution designed for the maritime sector.
             </h3>
 

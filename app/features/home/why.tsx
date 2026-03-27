@@ -1,3 +1,9 @@
+"use client";
+
+import { useEffect } from "react";
+import AOS from "aos";
+import "aos/dist/aos.css";
+
 export default function Why() {
   const WHY_ITEMS = [
     {
@@ -22,6 +28,15 @@ export default function Why() {
     },
   ];
 
+  useEffect(() => {
+    AOS.init({
+      duration: 800,
+      once: true,
+      offset: 120,
+      easing: "ease-out-cubic",
+    });
+  }, []);
+
   return (
     <>
       <link
@@ -29,7 +44,7 @@ export default function Why() {
         rel="stylesheet"
       />
 
-      <section className="py-28 px-4 sm:px-8 bg-[#050c1a] relative overflow-hidden">
+      <section className="py-28 px-4 sm:px-8 relative overflow-hidden">
         {/* Background glows */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-blue-500/10 via-transparent to-transparent pointer-events-none" />
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-150 h-150 bg-blue-500/20 rounded-full blur-[120px] pointer-events-none" />
@@ -38,11 +53,19 @@ export default function Why() {
         <div className="w-[80%] max-w-480 mx-auto relative z-10">
           {/* Header avec sous-titre */}
           <div className="text-center mb-16">
-            <h2 className="text-[clamp(2.4rem,5vw,3.8rem)] font-extrabold text-white mb-5 leading-tight tracking-tight">
+            <h2 className="mb-5" data-aos="fade-up">
               Why Choose Us?
             </h2>
-            <div className="w-16 h-0.75 bg-linear-to-r from-blue-400 via-blue-500 to-blue-600 rounded-full mx-auto mt-6" />
-            <p className="text-slate-400 max-w-2xl mx-auto text-base md:text-lg leading-relaxed mt-8">
+            <div
+              className="w-16 h-0.75 bg-linear-to-r from-blue-400 via-blue-500 to-blue-600 rounded-full mx-auto mt-6"
+              data-aos="fade-up"
+              data-aos-delay="100"
+            />
+            <p
+              className="max-w-2xl mx-auto mt-8"
+              data-aos="fade-up"
+              data-aos-delay="200"
+            >
               We tailor our services to your needs, ensuring maritime excellence,
               compliance, and efficiency.
             </p>
@@ -53,15 +76,18 @@ export default function Why() {
             {WHY_ITEMS.map(({ icon, title, desc }, i) => (
               <div
                 key={i}
-                className="group flex flex-col items-center text-center p-8 rounded-2xl h border transition-all duration-200 hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-500/40 hover:bg-blue-500/10"
+                className="group flex flex-col items-center p-8 rounded-2xl border transition-all duration-200 hover:shadow-xl hover:shadow-blue-500/10 hover:border-blue-500/40 hover:bg-blue-500/10"
                 style={{
                   background: "rgba(255,255,255,0.03)",
                   borderColor: "rgba(255,255,255,0.07)",
                 }}
+                data-aos="fade-up"
+                data-aos-delay={i * 100}
+                data-aos-duration="600"
               >
                 {/* Icône plus grande */}
                 <div
-                  className="w-16 h-16 rounded-xl flex items-center justify-center mb-6"
+                  className="w-18 h-18 rounded-xl flex items-center justify-center mb-6"
                   style={{
                     background: "rgba(59,130,246,0.15)",
                     border: "1px solid rgba(59,130,246,0.20)",
@@ -75,13 +101,9 @@ export default function Why() {
                   </span>
                 </div>
 
-                {/* Titre agrandi */}
-                <h3 className="text-xl font-bold text-white leading-snug mb-3">
-                  {title}
-                </h3>
+                <h4>{title}</h4>
 
-                {/* Description agrandie */}
-                <p className="text-base text-slate-400 leading-relaxed">{desc}</p>
+                <p>{desc}</p>
               </div>
             ))}
           </div>
